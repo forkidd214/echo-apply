@@ -11,31 +11,31 @@ type FormLayoutProps = {
 
 export default function FormLayout({ children }: FormLayoutProps) {
   return (
-    <div className={cn('flex-grow max-h-full flex flex-col px-2')}>
+    <div className={cn('flex max-h-full flex-grow flex-col px-2')}>
       <header
         className={cn(
-          'flex justify-between items-center gap-2 relative mb-10 border-b border-b-secondary min-h-[4rem]',
-          'lg:mb-0 lg:min-h-[3rem]'
+          'relative mb-9 flex min-h-[4rem] items-center justify-between gap-2 border-b border-b-border',
+          'lg:mb-0 lg:min-h-[3rem]',
         )}
       >
-        <div className="flex gap-2 order-1">
+        <div className="flex gap-2">
           <BackButton />
           <FormTitleInput />
         </div>
-        <div className="flex gap-2 order-3">
+        <div className="flex gap-2">
           <PublishButton />
           <OptionButton />
         </div>
         <div
-          className={cn('order-2', [
-            'absolute w-full bottom-0 translate-y-full',
-            ['lg:relative', 'lg:w-[revert]', 'lg:translate-y-[revert]'],
-          ])}
+          className={cn(
+            'absolute bottom-0 w-full translate-y-full',
+            'lg:left-1/2 lg:w-[revert] lg:-translate-x-1/2 lg:translate-y-[revert]',
+          )}
         >
           <FormNav />
         </div>
       </header>
-      <main className="flex-grow overflow-hidden">{children}</main>
+      <main className="flex-grow overflow-hidden bg-muted">{children}</main>
     </div>
   )
 }

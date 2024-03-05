@@ -1,18 +1,49 @@
+import { Trash, X } from 'lucide-react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Trash } from 'lucide-react'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
+import { cn } from '@/lib/utils'
 
-type BlockCardProps = {}
+type BlockCardProps = {
+  renderBlock?: Function
+}
 
-export default function BlockCard({}: BlockCardProps) {
+export default function BlockCard({ renderBlock }: BlockCardProps) {
   return (
     <Card>
-      <CardContent className="bg-white py-8 px-10">
-        <p className="text-center">Block</p>
+      <CardContent className="flex bg-card p-6">
+        <Drawer>
+          <DrawerTrigger
+            className={cn(
+              '-m-6 flex-1 p-6 text-left',
+              'relative after:absolute after:inset-0 after:bg-transparent',
+            )}
+          >
+            {renderBlock && renderBlock()}
+          </DrawerTrigger>
+          <DrawerContent className="h-5/6">
+            <div className="relative h-full">
+              <DrawerClose asChild className="absolute right-10 top-4">
+                <Button variant="secondary" size="icon">
+                  <X className="h-4 w-4" />
+                </Button>
+              </DrawerClose>
+
+              {renderBlock && renderBlock()}
+            </div>
+          </DrawerContent>
+        </Drawer>
       </CardContent>
-      <CardFooter className="py-1 px-2 flex justify-end">
-        <Button variant={'ghost'}>
-          <Trash className="h-4 w-4 mr-2" />
+
+      <CardFooter className="flex justify-end bg-muted px-2 py-1">
+        <Button variant="ghost">
+          <Trash fill="true" className="mr-2 h-4 w-4 opacity-70" />
           <span>Delete</span>
         </Button>
       </CardFooter>

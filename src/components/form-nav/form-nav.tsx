@@ -42,16 +42,16 @@ const NavLink = ({
         asChild
         variant="ghost"
         className={cn(
-          'w-full hover:bg-transparent h-9 lg:h-12',
+          'h-9 w-full hover:bg-transparent lg:h-12',
           [
             'before:absolute',
             'before:left-0',
             'before:right-0',
             'before:bottom-0',
             'hover:before:border-b-2',
-            'hover:before:border-primary/50',
+            'hover:before:border-accent-foreground/40',
           ],
-          isActive && 'before:border-primary/75 before:border-b-2'
+          isActive && 'before:border-b-2 before:border-accent-foreground',
         )}
       >
         <Link href={href}>{children}</Link>
