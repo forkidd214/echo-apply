@@ -1,4 +1,4 @@
-import { ClipboardEvent } from 'react'
+import { ClipboardEvent, useRef } from 'react'
 
 import ReactContentEditable, { Props } from 'react-contenteditable'
 import useRefCallback from './useRefCallback'
@@ -6,6 +6,7 @@ import useRefCallback from './useRefCallback'
 export default function ContentEditable({
   ref,
   onChange,
+  onPaste,
   onInput,
   onBlur,
   onKeyPress,
@@ -13,23 +14,17 @@ export default function ContentEditable({
   ...props
 }: Props) {
   const onChangeRef = useRefCallback(onChange)
+  const onPasteRef = useRefCallback(onPaste)
   const onInputRef = useRefCallback(onInput)
   const onBlurRef = useRefCallback(onBlur)
   const onKeyPressRef = useRefCallback(onKeyPress)
   const onKeyDownRef = useRefCallback(onKeyDown)
 
-  // only allowed paste plain text
-  const onPaste = (evt: ClipboardEvent<HTMLElement>) => {
-    evt.preventDefault()
-    var text = evt.clipboardData.getData('text/plain')
-    document.execCommand('insertHTML', false, text)
-  }
-
   return (
     <ReactContentEditable
-      onPaste={onPaste}
       {...props}
       onChange={onChangeRef}
+      onPaste={onPasteRef}
       onInput={onInputRef}
       onBlur={onBlurRef}
       onKeyPress={onKeyPressRef}

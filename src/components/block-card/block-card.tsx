@@ -20,12 +20,13 @@ export default function BlockCard({ renderBlock }: BlockCardProps) {
       <CardContent className="flex bg-card p-6">
         <Drawer>
           <DrawerTrigger
+            asChild // otherwhise illegal <button><button/></button>
             className={cn(
-              '-m-6 flex-1 p-6 text-left',
+              '-m-6 flex-1 p-6 text-left hover:cursor-pointer',
               'relative after:absolute after:inset-0 after:bg-transparent',
             )}
           >
-            {renderBlock && renderBlock()}
+            <div>{renderBlock && renderBlock()}</div>
           </DrawerTrigger>
           <DrawerContent className="h-5/6">
             <div className="relative h-full">
