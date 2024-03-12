@@ -11,10 +11,16 @@ import {
 import { cn } from '@/lib/utils'
 
 type BlockCardProps = {
+  id: string
+  onDelete?: Function
   renderBlock?: Function
 }
 
-export default function BlockCard({ renderBlock }: BlockCardProps) {
+export default function BlockCard({
+  id,
+  onDelete,
+  renderBlock,
+}: BlockCardProps) {
   return (
     <Card>
       <CardContent className="flex bg-card p-6">
@@ -43,8 +49,12 @@ export default function BlockCard({ renderBlock }: BlockCardProps) {
       </CardContent>
 
       <CardFooter className="flex justify-end bg-muted px-2 py-1">
-        <Button variant="ghost">
-          <Trash fill="true" className="mr-2 h-4 w-4 opacity-70" />
+        <Button
+          variant="ghost"
+          className="hover:bg-destructive hover:text-destructive-foreground [&>svg]:hover:opacity-100"
+          onClick={() => onDelete && onDelete(id)}
+        >
+          <Trash className="mr-2 h-4 w-4 fill-current opacity-70" />
           <span>Delete</span>
         </Button>
       </CardFooter>

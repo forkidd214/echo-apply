@@ -35,7 +35,7 @@ export default function FormLayout({ children }: FormLayoutProps) {
           <FormNav />
         </div>
       </header>
-      <main className="flex-grow overflow-hidden bg-muted">{children}</main>
+      <main className="-mx-2 flex-grow overflow-hidden">{children}</main>
     </div>
   )
 }

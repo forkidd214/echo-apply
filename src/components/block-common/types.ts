@@ -1,5 +1,5 @@
 export type BlockType =
-  | 'WELCOM'
+  | 'WELCOME'
   | 'END'
   | 'SHORT_TEXT'
   | 'LONG_TEXT'
