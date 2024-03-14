@@ -1,0 +1,94 @@
+{
+  "blocks": [
+    {
+      "id": "e073f2ee-791e-4a23-bb38-69710f8ce9f1",
+      "title": "Recruiter",
+      "description": "Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede. Morbi porttitor lorem id ligula.",
+      "type": "SHORT_TEXT",
+      "input": null
+    },
+    {
+      "id": "7016384f-a168-4620-bfd6-ccfc971de074",
+      "title": "Nurse Practicioner",
+      "description": "Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis.",
+      "type": "CONTACT_INFO",
+      "input": null
+    },
+    {
+      "id": "25038ea6-259e-446d-9e27-62b95ee58244",
+      "title": "Assistant Manager",
+      "description": "Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst.",
+      "type": "MULTIPLE_CHOICE",
+      "input": {
+        "variant": "single-choice",
+        "choices": [
+          {
+            "id": "06b3eda4-df34-426b-a72d-aca70418v9d4",
+            "value": "A good resume"
+          },
+          {
+            "id": "a72deda4-df34-426b-a72d-acada418v9d4",
+            "value": "Rich experiences"
+          },
+          {
+            "id": "06b3eda4-a72d-426b-a72d-aca70418a704",
+            "value": "Impressive projects"
+          },
+          {
+            "id": "06b3a72d-df34-426b-a72d-aca70418v9d4",
+            "value": "A growing mindset"
+          }
+        ]
+      }
+    },
+    {
+      "id": "68f0fd94-65df-49df-8c33-9bb46c571024",
+      "title": "Nuclear Power Engineer",
+      "description": "Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue.",
+      "type": "DATE",
+      "input": null
+    },
+    {
+      "id": "871eb310-a4c9-4871-9826-152db7592740",
+      "title": "VP Accounting",
+      "description": "Proin interdum mauris non ligula pellentesque ultrices. Phasellus id sapien in sapien iaculis congue.",
+      "type": "LONG_TEXT",
+      "input": null
+    },
+    {
+      "id": "78dc291d-96c5-48aa-a4f6-d25fdf9c70a8",
+      "title": "Assistant Professor",
+      "description": "Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo.",
+      "type": "DATE",
+      "input": null
+    },
+    {
+      "id": "06b3e6a4-df74-426b-a72d-ac67041839d4",
+      "title": "Account Representative IV",
+      "description": "Vivamus in felis eu sapien cursus vestibulum.",
+      "type": "SHORT_TEXT",
+      "input": null
+    },
+    {
+      "id": "d9c7fca4-0026-4e05-bbb6-ac22e75b6035",
+      "title": "Research Associate",
+      "description": "Integer non velit.",
+      "type": "YES_OR_NO",
+      "input": null
+    },
+    {
+      "id": "fb841e06-ef3e-4dc8-a4b2-b2e27f09fa17",
+      "title": "Actuary",
+      "description": "Suspendisse potenti.",
+      "type": "DATE",
+      "input": null
+    },
+    {
+      "id": "9048b17c-5d2c-4e2a-92b3-8da18a75fe9f",
+      "title": "Research Assistant IV",
+      "description": "Maecenas tristique, est et tempus semper, est quam pharetra magna, ac consequat metus sapien ut nunc.",
+      "type": "LONG_TEXT",
+      "input": null
+    }
+  ]
+}

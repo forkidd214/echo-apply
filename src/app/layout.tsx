@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 
 import type { Metadata } from 'next'
+import Providers from './_providers'
 import './globals.css'
 import { cn } from '@/lib/utils'
 
@@ -19,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, 'flex h-screen flex-col')}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

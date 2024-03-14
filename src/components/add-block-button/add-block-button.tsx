@@ -39,7 +39,7 @@ export default function AddBlockButton({ onAdd }: AddBlockButtonProps) {
                 <Button
                   variant={'ghost'}
                   className="w-full justify-start gap-2"
-                  onClick={() => onAdd && onAdd(blockType)}
+                  onClick={() => onAdd && onAdd({ type: blockType })}
                 >
                   <FileQuestion />
                   {blockType}

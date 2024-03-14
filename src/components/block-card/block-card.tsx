@@ -9,9 +9,10 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { cn } from '@/lib/utils'
+import { useBlockRead } from '@/lib/use-block'
 
 type BlockCardProps = {
-  id: string
+  id?: string
   onDelete?: Function
   renderBlock?: Function
 }
@@ -21,6 +22,8 @@ export default function BlockCard({
   onDelete,
   renderBlock,
 }: BlockCardProps) {
+  // const { data: block } = useBlockRead({ id })
+
   return (
     <Card>
       <CardContent className="flex bg-card p-6">
