@@ -1,14 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BlockTextEditor from './block-text-editor'
 
 type BlockTitleProps = {
   value?: string
+  onSubmit?: (arg0: { title: string }) => void
 }
 
-export default function BlockTitle({ value = '' }: BlockTitleProps) {
+export default function BlockTitle({ value = '', onSubmit }: BlockTitleProps) {
   const [title, setTitle] = useState(value)
+
+  /**
+   * The value serves as both the initial value
+   * and the server state that needs to be synchronized.
+   */
+  useEffect(() => {
+    setTitle(value)
+  }, [value])
 
   return (
     <BlockTextEditor
@@ -16,6 +25,7 @@ export default function BlockTitle({ value = '' }: BlockTitleProps) {
       setValue={setTitle}
       variant={'title'}
       placeholder="Your question here"
+      onBlur={() => value !== title && onSubmit && onSubmit({ title })}
     />
   )
 }

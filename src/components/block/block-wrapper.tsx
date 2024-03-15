@@ -1,26 +1,38 @@
-import { HTMLAttributes } from 'react'
+import { ComponentProps } from 'react'
+
 import {
   BlockCounter,
   BlockTitle,
   BlockDescription,
   BlockButton,
 } from '@/components/block-common'
+import { useBlock, useBlockRead } from '@/lib/use-block'
 
 type BlockWrapperProps = {
+  id: string
   children?: React.ReactNode
 }
 
-export default function BlockWrapper({ children }: BlockWrapperProps) {
+export default function BlockWrapper({ id, children }: BlockWrapperProps) {
+  const { updateBlock } = useBlock()
+  const { data: block } = useBlockRead(id)
+
+  const handleSubmit = (patch: Partial<typeof block>) =>
+    updateBlock({ id: block.id, ...patch })
+
   return (
     <div className="flex h-full w-full flex-col px-10">
       <section className="relative my-auto">
         <CounterWrapper>
-          <BlockCounter value={1} />
+          <BlockCounter value={block.index} />
         </CounterWrapper>
         <div className="space-y-8 ">
           <HeaderWrapper>
-            <BlockTitle />
-            <BlockDescription />
+            <BlockTitle value={block.title} onSubmit={handleSubmit} />
+            <BlockDescription
+              value={block.description}
+              onSubmit={handleSubmit}
+            />
           </HeaderWrapper>
           <InputWrapper>{children}</InputWrapper>
           <ButtonWrapper>
@@ -32,18 +44,16 @@ export default function BlockWrapper({ children }: BlockWrapperProps) {
   )
 }
 
-const CounterWrapper = (props: HTMLAttributes<HTMLDivElement>) => (
+const CounterWrapper = (props: ComponentProps<'div'>) => (
   <div className="absolute -left-7 top-0.5" {...props} />
 )
 
-const HeaderWrapper = (props: HTMLAttributes<HTMLDivElement>) => (
+const HeaderWrapper = (props: ComponentProps<'div'>) => (
   <div className="space-y-2" {...props} />
 )
 
-const InputWrapper = (props: HTMLAttributes<HTMLDivElement>) => (
-  <div {...props} />
-)
+const InputWrapper = (props: ComponentProps<'div'>) => <div {...props} />
 
-const ButtonWrapper = (props: HTMLAttributes<HTMLDivElement>) => (
+const ButtonWrapper = (props: ComponentProps<'div'>) => (
   <div className="" {...props} />
 )

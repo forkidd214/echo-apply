@@ -11,8 +11,8 @@ const useRefCallback = <T extends any[]>(
   useEffect(
     () => {
       ref.current = value
-      // eslint-disable-next-line react-hooks/exhaustive-deps
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     deps ?? [value],
   )
 

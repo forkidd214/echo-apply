@@ -1,29 +1,27 @@
+import { ReactNode } from 'react'
 import { Trash, X } from 'lucide-react'
+
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerHeader,
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { cn } from '@/lib/utils'
-import { useBlockRead } from '@/lib/use-block'
 
 type BlockCardProps = {
-  id?: string
   onDelete?: Function
   renderBlock?: Function
+  children?: ReactNode
 }
 
 export default function BlockCard({
-  id,
   onDelete,
   renderBlock,
+  children,
 }: BlockCardProps) {
-  // const { data: block } = useBlockRead({ id })
-
   return (
     <Card>
       <CardContent className="flex bg-card p-6">
@@ -35,7 +33,7 @@ export default function BlockCard({
               'relative after:absolute after:inset-0 after:bg-transparent',
             )}
           >
-            <div>{renderBlock && renderBlock()}</div>
+            <div>{renderBlock && renderBlock(1)}</div>
           </DrawerTrigger>
           <DrawerContent className="h-5/6">
             <div className="relative h-full">
@@ -45,7 +43,7 @@ export default function BlockCard({
                 </Button>
               </DrawerClose>
 
-              {renderBlock && renderBlock()}
+              {renderBlock && renderBlock(2)}
             </div>
           </DrawerContent>
         </Drawer>
@@ -55,7 +53,7 @@ export default function BlockCard({
         <Button
           variant="ghost"
           className="hover:bg-destructive hover:text-destructive-foreground [&>svg]:hover:opacity-100"
-          onClick={() => onDelete && onDelete(id)}
+          onClick={() => onDelete && onDelete()}
         >
           <Trash className="mr-2 h-4 w-4 fill-current opacity-70" />
           <span>Delete</span>

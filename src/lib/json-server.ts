@@ -1,5 +1,3 @@
-import db from '@/data/db.json'
-
 const BASE_URL = 'http://localhost:3014'
 
 async function fetchData(url: string, options = {}): Promise<any> {
@@ -8,7 +6,8 @@ async function fetchData(url: string, options = {}): Promise<any> {
     //   throw new Error('Fake server error')
     // }
 
-    const response = await fetch(url, options)
+    // Opt out of nextjs caching, otherwise server data is always stale
+    const response = await fetch(url, { ...options, cache: 'no-store' })
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)
     }
@@ -39,10 +38,10 @@ async function post<T>(endpoint: string, data: T): Promise<T> {
 
 async function patch<T>(
   endpoint: string,
-  data: T & { id: string },
+  data: Partial<T> & { id: string },
 ): Promise<T> {
   return fetchData(`${BASE_URL}/${endpoint}/${data.id}`, {
-    method: 'PUT',
+    method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -56,23 +55,4 @@ async function remove<T>(endpoint: string, id: string): Promise<T> {
   })
 }
 
-/**
- * blocks apis
- *
- */
-const BLOCK_ENDPOINT = 'blocks'
-type BlockType = (typeof db)[typeof BLOCK_ENDPOINT][0]
-
-const listBlocks = async () => list<BlockType>(BLOCK_ENDPOINT)
-
-const readBlock = async (id: string) => get<BlockType>(BLOCK_ENDPOINT, id)
-
-const createBlock = async (block: BlockType) =>
-  post<BlockType>(BLOCK_ENDPOINT, block)
-
-const updateBlock = async (block: BlockType) =>
-  patch<BlockType>(BLOCK_ENDPOINT, block)
-
-const deleteBlock = async (id: string) => remove<BlockType>(BLOCK_ENDPOINT, id)
-
-export { listBlocks, readBlock, createBlock, updateBlock, deleteBlock }
+export { list, get, post, patch, remove }

@@ -75,9 +75,9 @@ export default function BlockTextEditor({
     onChange && onChange(evt)
   }
 
-  const handleBlur = (evt: FocusEvent<HTMLElement>) => {
-    // console.log(value) // or plainText: evt.currentTarget.textContent
-  }
+  // const handleBlur = (evt: FocusEvent<HTMLElement>) => {
+  //   // console.log(value) // or plainText: evt.currentTarget.textContent
+  // }
 
   /**
    * only allowed paste plain text
@@ -109,10 +109,10 @@ export default function BlockTextEditor({
       className={cn(blockTextEditorVariants({ variant, className }))}
       onPointerDown={(evt) => evt.stopPropagation()} // disable drawer actions
       tagName="span"
+      // onBlur={handleBlur} // emit change to server
       {...props}
       data-placeholder={placeholder}
       html={value}
-      onBlur={handleBlur}
       onChange={handleChange}
       onPaste={handlePaste}
       onKeyDown={handleKeyDown}
