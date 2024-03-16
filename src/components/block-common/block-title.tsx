@@ -2,13 +2,19 @@
 
 import { useEffect, useState } from 'react'
 import BlockTextEditor from './block-text-editor'
+import { BlockStatus } from './types'
 
 type BlockTitleProps = {
   value?: string
   onSubmit?: (arg0: { title: string }) => void
+  status: BlockStatus
 }
 
-export default function BlockTitle({ value = '', onSubmit }: BlockTitleProps) {
+export default function BlockTitle({
+  value = '',
+  onSubmit,
+  status,
+}: BlockTitleProps) {
   const [title, setTitle] = useState(value)
 
   /**
@@ -26,6 +32,7 @@ export default function BlockTitle({ value = '', onSubmit }: BlockTitleProps) {
       variant={'title'}
       placeholder="Your question here"
       onBlur={() => value !== title && onSubmit && onSubmit({ title })}
+      disabled={status !== 'EDIT'}
     />
   )
 }

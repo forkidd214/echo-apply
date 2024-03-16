@@ -5,15 +5,21 @@ import {
   BlockTitle,
   BlockDescription,
   BlockButton,
+  BlockStatus,
 } from '@/components/block-common'
 import { useBlock, useBlockRead } from '@/lib/use-block'
 
 type BlockWrapperProps = {
   id: string
+  status: BlockStatus
   children?: React.ReactNode
 }
 
-export default function BlockWrapper({ id, children }: BlockWrapperProps) {
+export default function BlockWrapper({
+  id,
+  status,
+  children,
+}: BlockWrapperProps) {
   const { updateBlock } = useBlock()
   const { data: block } = useBlockRead(id)
 
@@ -28,10 +34,15 @@ export default function BlockWrapper({ id, children }: BlockWrapperProps) {
         </CounterWrapper>
         <div className="space-y-8 ">
           <HeaderWrapper>
-            <BlockTitle value={block.title} onSubmit={handleSubmit} />
+            <BlockTitle
+              value={block.title}
+              onSubmit={handleSubmit}
+              status={status}
+            />
             <BlockDescription
               value={block.description}
               onSubmit={handleSubmit}
+              status={status}
             />
           </HeaderWrapper>
           <InputWrapper>{children}</InputWrapper>

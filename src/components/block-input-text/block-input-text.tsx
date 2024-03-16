@@ -2,15 +2,13 @@
 
 import { useState } from 'react'
 
-import { BlockTextEditor } from '@/components/block-common'
+import { BlockStatus, BlockTextEditor } from '@/components/block-common'
 
 type BlockInputTextProps = {
-  disabled?: boolean
+  status: BlockStatus
 }
 
-export default function BlockInputText({
-  disabled = true,
-}: BlockInputTextProps) {
+export default function BlockInputText({ status }: BlockInputTextProps) {
   const [value, setValue] = useState('')
 
   return (
@@ -19,7 +17,7 @@ export default function BlockInputText({
       setValue={setValue}
       variant={'answer'}
       placeholder="Type your answer here..."
-      disabled={disabled}
+      disabled={status === 'EDIT'}
     />
   )
 }

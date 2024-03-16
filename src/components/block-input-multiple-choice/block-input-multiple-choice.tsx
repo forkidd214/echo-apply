@@ -8,14 +8,14 @@ import AddChoceButton from './add-choice-button'
 import useMultipleChoice from './useMultipleChoice'
 
 type BlockInputMultipleChoiceProps = {
-  status?: BlockStatus
+  status: BlockStatus
 }
 
 export default function BlockInputMultipleChoice({
-  status = 'EDIT',
+  status,
 }: BlockInputMultipleChoiceProps) {
   const [choices, addChoice, deleteChoice] = useMultipleChoice()
-  const isAddButtonShown = status === 'EDIT'
+  const isEditing = status === 'EDIT'
 
   return (
     <ul
@@ -35,7 +35,7 @@ export default function BlockInputMultipleChoice({
         </li>
       ))}
 
-      {isAddButtonShown && (
+      {isEditing && (
         <li>
           <AddChoceButton onClick={addChoice} />
         </li>

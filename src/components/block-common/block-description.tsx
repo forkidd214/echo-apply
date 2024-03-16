@@ -2,15 +2,18 @@
 
 import { useEffect, useState } from 'react'
 import BlockTextEditor from './block-text-editor'
+import { BlockStatus } from './types'
 
 type BlockDescriptionProps = {
   value?: string
   onSubmit?: (arg0: { description: string }) => void
+  status: BlockStatus
 }
 
 export default function BlockDescription({
   value = '',
   onSubmit,
+  status,
 }: BlockDescriptionProps) {
   const [description, setDescription] = useState(value)
 
@@ -31,6 +34,7 @@ export default function BlockDescription({
       onBlur={() =>
         value !== description && onSubmit && onSubmit({ description })
       }
+      disabled={status !== 'EDIT'}
     />
   )
 }

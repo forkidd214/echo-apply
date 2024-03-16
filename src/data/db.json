@@ -1,3 +1,15 @@
 {
-  "blocks": []
+  "blocks": [
+    {
+      "id": "73c5",
+      "type": "SHORT_TEXT",
+      "index": 1
+    },
+    {
+      "id": "a92a",
+      "type": "MULTIPLE_CHOICE",
+      "index": 2,
+      "title": ""
+    }
+  ]
 }

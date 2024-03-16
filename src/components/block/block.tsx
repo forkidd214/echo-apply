@@ -1,25 +1,27 @@
 import BlockInputText from '@/components/block-input-text'
 import BlockInputMultipleChoice from '@/components/block-input-multiple-choice'
+import { useBlockRead } from '@/lib/use-block'
+import { BlockStatus } from '@/components/block-common'
 
 import BlockWrapper from './block-wrapper'
-import { useBlockRead } from '@/lib/use-block'
 
 type BlockProps = {
   id: string
+  status: BlockStatus
 }
 
-export default function Block({ id }: BlockProps) {
+export default function Block({ id, status }: BlockProps) {
   const { data: block } = useBlockRead(id)
 
   let blockInputFields
 
   switch (block.type) {
     case 'SHORT_TEXT':
-      blockInputFields = <BlockInputText />
+      blockInputFields = <BlockInputText status={status} />
       break
 
     case 'MULTIPLE_CHOICE':
-      blockInputFields = <BlockInputMultipleChoice />
+      blockInputFields = <BlockInputMultipleChoice status={status} />
       break
 
     default:
@@ -27,5 +29,9 @@ export default function Block({ id }: BlockProps) {
       break
   }
 
-  return <BlockWrapper id={id}>{blockInputFields}</BlockWrapper>
+  return (
+    <BlockWrapper id={id} status={status}>
+      {blockInputFields}
+    </BlockWrapper>
+  )
 }

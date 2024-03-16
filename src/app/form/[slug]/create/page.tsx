@@ -25,7 +25,7 @@ export default function Page() {
             <div key={id}>
               <BlockCard
                 onDelete={() => deleteBlock(id)}
-                renderBlock={() => <Block id={id} />}
+                renderBlock={({ status }) => <Block id={id} status={status} />}
               />
             </div>
           )

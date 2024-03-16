@@ -59,8 +59,8 @@ export default function Choice({
    * set focus to editor upon create and click button
    */
   useEffect(() => {
-    editorRef.current?.focus()
-  }, [])
+    isEditing && editorRef.current?.focus()
+  }, [isEditing])
 
   return (
     <Button
