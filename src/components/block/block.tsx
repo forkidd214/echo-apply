@@ -21,7 +21,7 @@ export default function Block({ id, status }: BlockProps) {
       break
 
     case 'MULTIPLE_CHOICE':
-      blockInputFields = <BlockInputMultipleChoice status={status} />
+      blockInputFields = <BlockInputMultipleChoice id={id} status={status} />
       break
 
     default:

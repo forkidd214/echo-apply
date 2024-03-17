@@ -13,20 +13,20 @@ import DeleteChoiceButton from './delete-choice-button'
 
 type ChoiceProps = {
   status: BlockStatus
-  defaultValue?: string
-  onChange?: (evt: ContentEditableEvent) => void
+  value?: string
+  onSubmit?: (arg0: { value: string }) => void
   shortcut?: string
   onDelete?: Function
 }
 
 export default function Choice({
   status,
-  defaultValue = '',
-  onChange,
+  value = '',
+  onSubmit,
   shortcut,
   onDelete,
 }: ChoiceProps) {
-  const [value, setValue] = useState(defaultValue)
+  const [text, setText] = useState(value)
   const editorRef = useRef<HTMLDivElement>(null)
   const [state, setStateImp] = useState({
     focus: false,
@@ -51,16 +51,27 @@ export default function Choice({
     setState({ focus: true })
     editorRef.current?.focus()
   }
-  const handleBlur = () => setState({ focus: false })
+  const handleBlur = () => {
+    setState({ focus: false })
+    onSubmit && onSubmit({ value: text })
+  }
   const handlePointerEnter = () => setState({ hover: true })
   const handlePointerLeave = () => setState({ hover: false })
 
   /**
-   * set focus to editor upon create and click button
+   * set focus to editor upon create
    */
   useEffect(() => {
     isEditing && editorRef.current?.focus()
   }, [isEditing])
+
+  /**
+   * The value serves as both the initial value
+   * and the server state that needs to be synchronized.
+   */
+  useEffect(() => {
+    setText(value)
+  }, [value])
 
   return (
     <Button
@@ -81,12 +92,11 @@ export default function Choice({
 
       <ChoiceShorcut>{shortcut}</ChoiceShorcut>
       <BlockTextEditor
-        value={value}
-        setValue={setValue}
+        value={text}
+        setValue={setText}
         variant={'choice'}
         className="max-w-[calc(100%-2rem)] flex-auto"
         placeholder="Choice"
-        onChange={onChange}
         innerRef={editorRef}
         disabled={!isEditing}
         hasNoLineBreak
@@ -101,13 +111,4 @@ const ChoiceShorcut = ({ children }: { children?: ReactNode }) => {
       {children}
     </span>
   )
-}
-
-function stripHtml(html: string) {
-  // Create a temporary element to hold the HTML
-  var temp = document.createElement('div')
-  temp.innerHTML = html
-
-  // Extract the text content from the temporary element
-  return temp.textContent || temp.innerText || ''
 }

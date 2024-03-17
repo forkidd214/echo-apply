@@ -3,13 +3,41 @@
     {
       "id": "73c5",
       "type": "SHORT_TEXT",
-      "index": 1
+      "index": 1,
+      "title": "What's your company name?"
     },
     {
-      "id": "a92a",
-      "type": "MULTIPLE_CHOICE",
       "index": 2,
-      "title": ""
+      "id": "259e",
+      "title": "Why did you hire me?",
+      "description": "Yes, I know you will🙈",
+      "type": "MULTIPLE_CHOICE",
+      "input": {
+        "variant": "single-choice",
+        "choices": [
+          {
+            "id": "vrx6x1",
+            "value": "Good looking"
+          },
+          {
+            "id": "x5x8hy",
+            "value": "Solid background"
+          },
+          {
+            "id": "b5xntw",
+            "value": "Impressive projects"
+          },
+          {
+            "id": "aa545r",
+            "value": "Considerable skills"
+          }
+        ]
+      }
+    },
+    {
+      "id": "581e",
+      "type": "SHORT_TEXT",
+      "index": 3
     }
   ]
 }

@@ -5,16 +5,19 @@ import { cn } from '@/lib/utils'
 
 import Choice from './choice'
 import AddChoceButton from './add-choice-button'
-import useMultipleChoice from './useMultipleChoice'
+import useMultipleChoice from './use-multiple-choice'
 
 type BlockInputMultipleChoiceProps = {
+  id: string
   status: BlockStatus
 }
 
 export default function BlockInputMultipleChoice({
+  id,
   status,
 }: BlockInputMultipleChoiceProps) {
-  const [choices, addChoice, deleteChoice] = useMultipleChoice()
+  const { choices, addChoice, updateChoice, deleteChoice } =
+    useMultipleChoice(id)
   const isEditing = status === 'EDIT'
 
   return (
@@ -28,9 +31,15 @@ export default function BlockInputMultipleChoice({
         <li key={id}>
           <Choice
             status={status}
-            defaultValue={value}
+            value={value}
             shortcut={getShortCutByIndex(index)}
-            onDelete={() => deleteChoice({ id })}
+            onDelete={() => deleteChoice(id)}
+            onSubmit={(newChoice) =>
+              updateChoice({
+                id,
+                ...newChoice,
+              })
+            }
           />
         </li>
       ))}
