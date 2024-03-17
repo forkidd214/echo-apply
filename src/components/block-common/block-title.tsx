@@ -16,6 +16,7 @@ export default function BlockTitle({
   status,
 }: BlockTitleProps) {
   const [title, setTitle] = useState(value)
+  const isEditing = status === 'EDIT'
 
   /**
    * The value serves as both the initial value
@@ -30,9 +31,9 @@ export default function BlockTitle({
       value={title}
       setValue={setTitle}
       variant={'title'}
-      placeholder="Your question here"
+      placeholder={isEditing ? 'Your question here' : ''}
       onBlur={() => value !== title && onSubmit && onSubmit({ title })}
-      disabled={status !== 'EDIT'}
+      disabled={!isEditing}
     />
   )
 }

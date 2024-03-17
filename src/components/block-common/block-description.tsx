@@ -16,6 +16,8 @@ export default function BlockDescription({
   status,
 }: BlockDescriptionProps) {
   const [description, setDescription] = useState(value)
+  const isEditing = status === 'EDIT'
+  const isShowing = isEditing || value !== ''
 
   /**
    * The value serves as both the initial value
@@ -26,15 +28,17 @@ export default function BlockDescription({
   }, [value])
 
   return (
-    <BlockTextEditor
-      value={description}
-      setValue={setDescription}
-      variant={'description'}
-      placeholder="Description (optional)"
-      onBlur={() =>
-        value !== description && onSubmit && onSubmit({ description })
-      }
-      disabled={status !== 'EDIT'}
-    />
+    isShowing && (
+      <BlockTextEditor
+        value={description}
+        setValue={setDescription}
+        variant={'description'}
+        placeholder={'Description (optional)'}
+        onBlur={() =>
+          value !== description && onSubmit && onSubmit({ description })
+        }
+        disabled={!isEditing}
+      />
+    )
   )
 }
