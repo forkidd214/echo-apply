@@ -5,9 +5,11 @@ import Block from '@/components/block'
 import AddBlockButton from '@/components/add-block-button'
 import { useBlock } from '@/lib/use-block'
 import { useEffect } from 'react'
+import useBlockNavigator from '@/components/block/use-block-navigator'
 
 export default function Page() {
   const { blocks, createBlock, updateBlock, deleteBlock } = useBlock()
+  const {openBlock} = useBlockNavigator()
 
   /**
    * inject block index into server
@@ -24,6 +26,7 @@ export default function Page() {
           return (
             <div key={id}>
               <BlockCard
+                onOpen={() => openBlock(id)}
                 onDelete={() => deleteBlock(id)}
                 renderBlock={({ status }) => <Block id={id} status={status} />}
               />

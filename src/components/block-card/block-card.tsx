@@ -1,4 +1,4 @@
-import {  ReactNode } from 'react'
+import { ReactNode } from 'react'
 import { Trash, X } from 'lucide-react'
 
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
@@ -13,16 +13,21 @@ import { BlockStatus } from '@/components/block-common'
 import { cn } from '@/lib/utils'
 
 type BlockCardProps = {
+  onOpen?: Function
   onDelete?: Function
   renderBlock: ({ status }: { status: BlockStatus }) => ReactNode
   children?: ReactNode
 }
 
-export default function BlockCard({ onDelete, renderBlock }: BlockCardProps) {
+export default function BlockCard({
+  onOpen,
+  onDelete,
+  renderBlock,
+}: BlockCardProps) {
   return (
     <Card>
       <CardContent className="flex bg-card p-6">
-        <Drawer>
+        <Drawer onOpenChange={(isOpen) => isOpen && onOpen && onOpen()}>
           <DrawerTrigger
             asChild // otherwhise illegal <button><button/></button>
             className={cn(
@@ -30,7 +35,7 @@ export default function BlockCard({ onDelete, renderBlock }: BlockCardProps) {
               'relative after:absolute after:inset-0 after:bg-transparent',
             )}
           >
-            <div>{renderBlock && renderBlock({status: 'PREVIEW'})}</div>
+            <div>{renderBlock && renderBlock({ status: 'PREVIEW' })}</div>
           </DrawerTrigger>
           <DrawerContent className="h-5/6">
             <div className="relative h-full">
@@ -40,7 +45,7 @@ export default function BlockCard({ onDelete, renderBlock }: BlockCardProps) {
                 </Button>
               </DrawerClose>
 
-              {renderBlock && renderBlock({status:'EDIT'})}
+              {renderBlock && renderBlock({ status: 'EDIT' })}
             </div>
           </DrawerContent>
         </Drawer>
