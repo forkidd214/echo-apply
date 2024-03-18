@@ -13,12 +13,14 @@ type BlockWrapperProps = {
   id: string
   status: BlockStatus
   children?: React.ReactNode
+  onNext?: () => void
 }
 
 export default function BlockWrapper({
   id,
   status,
   children,
+  onNext,
 }: BlockWrapperProps) {
   const { updateBlock } = useBlock()
   const { data: block } = useBlockRead(id)
@@ -47,7 +49,9 @@ export default function BlockWrapper({
           </HeaderWrapper>
           <InputWrapper>{children}</InputWrapper>
           <ButtonWrapper>
-            <BlockButton>OK</BlockButton>
+            <BlockButton status={status} onClick={onNext}>
+              OK
+            </BlockButton>
           </ButtonWrapper>
         </div>
       </section>

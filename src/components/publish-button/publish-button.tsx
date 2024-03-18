@@ -1,21 +1,27 @@
+'use client'
+
+import { useReducer } from 'react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
-type PublishButtonProps = {
-  published?: boolean
-}
+type PublishButtonProps = {}
 
-export default function PublishButton({
-  published = false,
-}: PublishButtonProps) {
+export default function PublishButton({}: PublishButtonProps) {
+  const [isPublished, togglePublish] = useReducer(
+    (value: boolean) => !value,
+    false,
+  )
+
   return (
     <Button
+      variant={'destructive'}
       className={cn(
-        !published &&
+        !isPublished &&
           'bg-accent-foreground text-accent hover:bg-accent-foreground/90',
       )}
+      onClick={togglePublish}
     >
-      Publish
+      {isPublished ? 'Unpublish' : 'Publish'}
     </Button>
   )
 }

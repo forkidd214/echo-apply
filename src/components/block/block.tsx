@@ -8,9 +8,10 @@ import BlockWrapper from './block-wrapper'
 type BlockProps = {
   id: string
   status: BlockStatus
+  onNext?: () => void
 }
 
-export default function Block({ id, status }: BlockProps) {
+export default function Block({ id, status, onNext }: BlockProps) {
   const { data: block } = useBlockRead(id)
 
   let blockInputFields
@@ -30,7 +31,7 @@ export default function Block({ id, status }: BlockProps) {
   }
 
   return (
-    <BlockWrapper id={id} status={status}>
+    <BlockWrapper id={id} status={status} onNext={onNext}>
       {blockInputFields}
     </BlockWrapper>
   )

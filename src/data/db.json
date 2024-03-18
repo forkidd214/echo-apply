@@ -37,7 +37,58 @@
     {
       "id": "581e",
       "type": "SHORT_TEXT",
-      "index": 3
+      "index": 3,
+      "title": "What's your favorite game?"
+    },
+    {
+      "id": "d9df",
+      "type": "LONG_TEXT",
+      "index": 4,
+      "description": "Scroll to the previous snap point if possible. When loop is disabled and the carousel has reached the first snap point, this method won't do anything. Set the jump parameter to true when you want to go to the previous slide instantly.",
+      "title": "How to use scroll?"
+    },
+    {
+      "id": "28b2",
+      "type": "MULTIPLE_CHOICE",
+      "index": 5,
+      "title": "What's more important to you?",
+      "input": {
+        "variant": "single-choice",
+        "choices": [
+          {
+            "id": "sd633u",
+            "value": "Family"
+          },
+          {
+            "id": "8ptk15",
+            "value": "Friends"
+          },
+          {
+            "id": "40p8am",
+            "value": "Money"
+          },
+          {
+            "id": "1vhvw9",
+            "value": "Status"
+          },
+          {
+            "id": "hqj78z",
+            "value": "Time"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c0b9",
+      "type": "YES_OR_NO",
+      "index": 6,
+      "title": "Ask me something?"
+    },
+    {
+      "id": "9534",
+      "type": "END",
+      "index": 7,
+      "title": "Thank you for your time!"
     }
   ]
 }

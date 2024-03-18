@@ -1,13 +1,19 @@
-import { Button } from '@/components/ui/button'
+import { Button, ButtonProps } from '@/components/ui/button'
 import React from 'react'
+import { BlockStatus } from './types'
 
-type BlockButtonProps = {
+interface BlockButtonProps extends ButtonProps {
+  status: BlockStatus
   children?: React.ReactNode
 }
 
-export default function BlockButton({ children, ...props }: BlockButtonProps) {
+export default function BlockButton({
+  status,
+  children,
+  ...props
+}: BlockButtonProps) {
   return (
-    <Button asChild {...props}>
+    <Button asChild={status === 'EDIT'} {...props}>
       <span>{children}</span>
     </Button>
   )
