@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, ReactNode } from 'react'
+import { useState, useEffect, useCallback, ReactNode, useRef } from 'react'
 
 import { type CarouselApi } from '@/components/ui/carousel'
 import {
@@ -27,18 +27,17 @@ export default function BlockCarousel({
   const [api, setApi] = useState<CarouselApi>()
   const [progress, setProgress] = useState(0)
 
-  const onScroll = useCallback((api: CarouselApi) => {
-    const percent = Math.max(0, Math.min(1, api?.scrollProgress() ?? 0))
-    setProgress(percent * 100)
-  }, [])
-
   useEffect(() => {
     if (!api) return
 
-    onScroll(api)
-    api.on('reInit', onScroll)
-    api.on('scroll', onScroll)
-  }, [api, onScroll])
+    const handleSelect = (api: NonNullable<CarouselApi>) => {
+      const percent =
+        api.selectedScrollSnap() / (api.scrollSnapList().length - 1)
+      setProgress(percent * 100)
+    }
+
+    api.on('select', handleSelect)
+  }, [api])
 
   return (
     <Carousel
