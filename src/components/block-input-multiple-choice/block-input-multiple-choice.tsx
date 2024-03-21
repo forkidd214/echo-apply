@@ -1,7 +1,7 @@
 'use client'
 
 import { BlockStatus } from '@/components/block-common'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 import Choice from './choice'
 import AddChoceButton from './add-choice-button'

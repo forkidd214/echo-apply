@@ -6,7 +6,7 @@ import {
   useMutation,
 } from '@tanstack/react-query'
 import dbSample from '@/data/db-sample.json'
-import { get, list, patch, post, remove } from './json-server'
+import { get, list, patch, post, remove } from '@/utils/json-server'
 
 /* ========== keys factory ========== */
 const blockKeys = {

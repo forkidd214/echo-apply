@@ -1,12 +1,5 @@
 import { useCallback } from 'react'
-import { twMerge } from 'tailwind-merge'
-import { type ClassValue, clsx } from 'clsx'
-
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
 
 export function useSearchParamsManager() {
   const router = useRouter()

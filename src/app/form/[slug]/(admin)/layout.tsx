@@ -3,7 +3,7 @@ import FormNav from '@/components/form-nav'
 import FormTitleInput from '@/components/form-title-input'
 import OptionButton from '@/components/option-button'
 import PublishButton from '@/components/publish-button'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 type FormLayoutProps = {
   children: React.ReactNode

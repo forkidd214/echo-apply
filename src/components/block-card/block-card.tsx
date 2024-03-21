@@ -10,7 +10,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { BlockStatus } from '@/components/block-common'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 type BlockCardProps = {
   onOpen?: Function

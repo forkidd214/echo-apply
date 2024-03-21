@@ -4,7 +4,8 @@
       "id": "73c5",
       "type": "SHORT_TEXT",
       "index": 1,
-      "title": "What's your company name?"
+      "title": "What's your company name?",
+      "description": "Optional"
     },
     {
       "index": 2,

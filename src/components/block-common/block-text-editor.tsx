@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import ContentEditable, {
   ContentEditableEvent,
 } from '@/components/content-editable'
-import { cn } from '@/lib/utils'
+import { cn } from '@/utils/cn'
 
 const blockTextEditorVariants = cva(
   'relative block before:absolute before:inset-0 before:hidden before:overflow-hidden before:overflow-ellipsis before:whitespace-nowrap before:text-muted-foreground/70 before:content-[attr(data-placeholder)] empty:before:block focus:before:opacity-30 focus-visible:outline-none',

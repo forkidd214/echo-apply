@@ -1,4 +1,4 @@
-import { useSearchParamsManager } from '@/lib/utils'
+import { useSearchParamsManager } from '@/utils/helpers'
 
 export default function useBlockNavigator() {
   const { getSearchParams, updateSearchParams } = useSearchParamsManager()
