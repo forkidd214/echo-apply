@@ -1,0 +1,45 @@
+import { redirect } from 'next/navigation'
+import { createClient } from '@/utils/supabase/server'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+
+import FormTable from './form-table'
+import CreateFormButton from './create-form-button'
+
+export const dynamic = 'force-dynamic'
+
+export default async function Page() {
+  const supabase = createClient()
+
+  const {
+    data: { user: authUser },
+  } = await supabase.auth.getUser()
+
+  if (!authUser) return redirect('/login')
+
+  const { data: user } = await supabase.from('users').select('*').single()
+  const { data: forms } = await supabase.from('forms').select('*')
+
+  return (
+    <div className="flex flex-grow flex-col px-2">
+      <header
+        className={
+          'flex min-h-[4rem] items-center justify-between gap-2 border-b border-b-border'
+        }
+      >
+        <h1>My workspace</h1>
+        <div className="space-x-2">
+          <CreateFormButton />
+          <Button asChild variant={'link'}>
+            <Link href={'/account'}>{user?.full_name ?? 'EMPTY NAME'}</Link>
+          </Button>
+        </div>
+      </header>
+      <main className="-mx-2 flex-grow bg-muted py-4">
+        <div className="container">
+          <FormTable forms={forms ?? []} />
+        </div>
+      </main>
+    </div>
+  )
+}
