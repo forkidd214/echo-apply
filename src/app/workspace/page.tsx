@@ -6,19 +6,12 @@ import { Button } from '@/components/ui/button'
 import FormTable from './form-table'
 import CreateFormButton from './create-form-button'
 
-export const dynamic = 'force-dynamic'
-
 export default async function Page() {
   const supabase = createClient()
 
-  const {
-    data: { user: authUser },
-  } = await supabase.auth.getUser()
-
-  if (!authUser) return redirect('/login')
-
   const { data: user } = await supabase.from('users').select('*').single()
-  const { data: forms } = await supabase.from('forms').select('*')
+
+  if (!user) return redirect('/login')
 
   return (
     <div className="flex flex-grow flex-col px-2">
@@ -37,7 +30,7 @@ export default async function Page() {
       </header>
       <main className="-mx-2 flex-grow bg-muted py-4">
         <div className="container">
-          <FormTable forms={forms ?? []} />
+          <FormTable />
         </div>
       </main>
     </div>

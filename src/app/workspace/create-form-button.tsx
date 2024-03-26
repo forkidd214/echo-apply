@@ -1,25 +1,10 @@
 'use client'
 
-import { createClient } from '@/utils/supabase/client'
 import { Button } from '@/components/ui/button'
+import { useFormCreate } from '@/lib/use-form'
 
 export default function CreateFormButton() {
-  const supabase = createClient()
-
-  async function createForm({ name }: { name: string | null }) {
-    try {
-      const { error } = await supabase.from('forms').insert({
-        name,
-      })
-
-      if (error) throw error
-      console.log('createForm')
-    } catch (error) {
-      console.log('Error createForm!')
-    } finally {
-      console.log('complete createForm')
-    }
-  }
+  const { mutate: createForm } = useFormCreate()
 
   return (
     <Button

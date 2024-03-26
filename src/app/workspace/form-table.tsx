@@ -1,8 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
-import OptionButton from '@/components/option-button'
 import {
   Table,
   TableBody,
@@ -12,13 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import FormOptionButton from './form-option-button'
+import { cn } from '@/utils/cn'
+import { useFormList } from '@/lib/use-form'
+import { useRouter } from 'next/navigation'
 
-type FormTableProps = {
-  forms?: any[]
-}
+type FormTableProps = {}
 
-export default function FormTable({ forms = [] }: FormTableProps) {
+export default function FormTable({}: FormTableProps) {
   const router = useRouter()
+  const { data: forms } = useFormList()
 
   return (
     <Table>
@@ -35,24 +35,28 @@ export default function FormTable({ forms = [] }: FormTableProps) {
         {forms.map((form) => (
           <TableRow
             key={form.id}
-            role="link"
-            onClick={() => router.push(`/form/${form.id}/create`)}
-            className="border-b-8 border-muted drop-shadow-sm hover:cursor-pointer [&_td:first-child]:rounded-l [&_td:last-child]:rounded-r [&_td]:bg-background [&_td]:hover:bg-background/80"
+            className={cn(
+              'border-b-8 border-muted drop-shadow-sm [&_td:first-child]:rounded-l [&_td:last-child]:rounded-r [&_td]:bg-background',
+            )}
           >
-            <TableCell className="w-max max-w-md truncate font-medium">
+            <TableCell
+              role="link"
+              onClick={() => router.push(`/form/${form.id}/create`)}
+              className="w-max max-w-md truncate font-medium hover:cursor-pointer"
+            >
               {form.name}
             </TableCell>
             <TableCell className="whitespace-nowrap">
-              {form.responses ?? '0'}
+              {form.responses}
             </TableCell>
             <TableCell className="whitespace-nowrap">
-              {form.completion ?? '0%'}
+              {(form.completion * 100).toFixed() + '%'}
             </TableCell>
             <TableCell className="whitespace-nowrap">
-              {form.updated_at.slice(0, 10)}
+              {form.updated_at?.slice(0, 10)}
             </TableCell>
             <TableCell className="text-right">
-              <OptionButton />
+              <FormOptionButton formId={form.id} />
             </TableCell>
           </TableRow>
         ))}
