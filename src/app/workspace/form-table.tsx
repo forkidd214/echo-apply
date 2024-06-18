@@ -32,7 +32,7 @@ export default function FormTable({}: FormTableProps) {
         </TableRow>
       </TableHeader>
       <TableBody className="space-y-4">
-        {forms.map((form) => (
+        {forms?.map((form) => (
           <TableRow
             key={form.id}
             className={cn(

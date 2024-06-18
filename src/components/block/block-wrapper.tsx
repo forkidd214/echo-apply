@@ -7,7 +7,7 @@ import {
   BlockButton,
   BlockStatus,
 } from '@/components/block-common'
-import { useBlock, useBlockRead } from '@/lib/use-block'
+import { useBlockUpdate, useBlockRead } from '@/lib/use-block'
 
 type BlockWrapperProps = {
   id: string
@@ -22,8 +22,10 @@ export default function BlockWrapper({
   children,
   onNext,
 }: BlockWrapperProps) {
-  const { updateBlock } = useBlock()
+  const { mutate: updateBlock } = useBlockUpdate()
   const { data: block } = useBlockRead(id)
+
+  if (!block) return null
 
   const handleSubmit = (patch: Partial<typeof block>) =>
     updateBlock({ id: block.id, ...patch })
@@ -32,17 +34,17 @@ export default function BlockWrapper({
     <div className="flex h-full w-full flex-col px-10">
       <section className="relative my-auto">
         <CounterWrapper>
-          <BlockCounter value={block.index} />
+          <BlockCounter value={block.index ?? -1} />
         </CounterWrapper>
         <div className="space-y-8 ">
           <HeaderWrapper>
             <BlockTitle
-              value={block.title}
+              value={block.title ?? ''}
               onSubmit={handleSubmit}
               status={status}
             />
             <BlockDescription
-              value={block.description}
+              value={block.description ?? ''}
               onSubmit={handleSubmit}
               status={status}
             />

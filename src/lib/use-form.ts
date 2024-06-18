@@ -1,7 +1,14 @@
 import {
   QueryFunctionContext,
   useQueryClient,
-  useSuspenseQuery,
+  /**
+   * opt out of data fetching on server for now
+   * due to nextjs failling feeding cookies to supabase on server
+   * fetching authenticaed data on server is somewhat annoying
+   * See https://github.com/TanStack/query/issues/6116#issuecomment-1904051005 for details
+   */
+  useQuery,
+  // useSuspenseQuery as useQuery,
   useMutation,
 } from '@tanstack/react-query'
 
@@ -26,10 +33,11 @@ const readForm = async ({
   queryKey, // only accept keys that come from the factory
 }: QueryFunctionContext<ReturnType<(typeof formKeys)['detail']>>) => {
   const [, , id] = queryKey // ["forms", "detail", id]
+
   return (
     await supabase
       .from('forms')
-      .select()
+      .select(`*, blocks (form_id)`)
       .eq('id', id) // query key dependencies safe
       .single()
       .throwOnError()
@@ -62,17 +70,16 @@ const transformForms = (forms: Awaited<ReturnType<typeof listForms>>) =>
 
 /* ========== hooks ========== */
 function useFormList() {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: formKeys.list('all'),
     queryFn: listForms,
-    refetchOnMount: 'always', // client side supabase doesn't have cookies for authenticated data fetching. See https://github.com/TanStack/query/issues/6116#issuecomment-1904051005 for details
     select: transformForms,
   })
 }
 
 function useFormRead(id: string) {
   const queryClient = useQueryClient()
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: formKeys.detail(id),
     queryFn: readForm,
     initialData: () =>

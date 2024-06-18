@@ -10,13 +10,15 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { BlockType } from '@/components/block-common'
+import { useBlockTypes } from '@/lib/use-block'
 
 type AddBlockButtonProps = {
   onAdd?: Function
 }
 
 export default function AddBlockButton({ onAdd }: AddBlockButtonProps) {
+  const { data: blockTypes } = useBlockTypes()
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,16 +35,16 @@ export default function AddBlockButton({ onAdd }: AddBlockButtonProps) {
         </DialogHeader>
 
         <ul className="space-y-2">
-          {BLOCK_TYPES.map((blockType) => (
-            <li key={blockType}>
+          {blockTypes?.map((bt) => (
+            <li key={bt.id}>
               <DialogClose asChild>
                 <Button
                   variant={'ghost'}
                   className="w-full justify-start gap-2"
-                  onClick={() => onAdd && onAdd({ type: blockType })}
+                  onClick={() => onAdd && onAdd({ block_type_id: bt.id })}
                 >
                   <FileQuestion />
-                  {blockType}
+                  {bt.name}
                 </Button>
               </DialogClose>
             </li>
@@ -53,7 +55,7 @@ export default function AddBlockButton({ onAdd }: AddBlockButtonProps) {
   )
 }
 
-const BLOCK_TYPES: BlockType[] = [
+/* const BLOCK_TYPES = [
   'WELCOME',
   'END',
   'SHORT_TEXT',
@@ -62,4 +64,4 @@ const BLOCK_TYPES: BlockType[] = [
   'MULTIPLE_CHOICE',
   'CONTACT_INFO',
   'DATE',
-]
+] */

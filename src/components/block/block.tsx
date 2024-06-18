@@ -4,6 +4,7 @@ import { useBlockRead } from '@/lib/use-block'
 import { BlockStatus } from '@/components/block-common'
 
 import BlockWrapper from './block-wrapper'
+import { type } from 'os'
 
 type BlockProps = {
   id: string
@@ -13,6 +14,8 @@ type BlockProps = {
 
 export default function Block({ id, status, onNext }: BlockProps) {
   const { data: block } = useBlockRead(id)
+
+  if (!block) return null
 
   let blockInputFields
 
