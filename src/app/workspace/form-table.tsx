@@ -1,5 +1,7 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
+
 import {
   Table,
   TableBody,
@@ -12,7 +14,6 @@ import {
 import FormOptionButton from './form-option-button'
 import { cn } from '@/utils/cn'
 import { useFormList } from '@/lib/use-form'
-import { useRouter } from 'next/navigation'
 
 type FormTableProps = {}
 
@@ -34,7 +35,7 @@ export default function FormTable({}: FormTableProps) {
       <TableBody className="space-y-4">
         {forms?.map((form) => (
           <TableRow
-            key={form.id}
+            key={`form-row-${form.id}`}
             className={cn(
               'border-b-8 border-muted drop-shadow-sm [&_td:first-child]:rounded-l [&_td:last-child]:rounded-r [&_td]:bg-background',
             )}

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 
 import FormTable from './form-table'
 import CreateFormButton from './create-form-button'
+import FormCards from './form-cards'
 
 export default async function Page() {
   const supabase = createClient()
@@ -30,7 +31,12 @@ export default async function Page() {
       </header>
       <main className="-mx-2 flex-grow bg-muted py-4">
         <div className="container">
-          <FormTable />
+          <div className="hidden lg:block">
+            <FormTable />
+          </div>
+          <div className="block lg:hidden">
+            <FormCards />
+          </div>
         </div>
       </main>
     </div>
