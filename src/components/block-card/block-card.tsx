@@ -26,7 +26,7 @@ export default function BlockCard({
 }: BlockCardProps) {
   return (
     <Card>
-      <CardContent className="flex bg-card p-6">
+      <CardContent className="flex p-6">
         <Drawer onOpenChange={(isOpen) => isOpen && onOpen && onOpen()}>
           <DrawerTrigger
             asChild // otherwhise illegal <button><button/></button>
@@ -51,7 +51,7 @@ export default function BlockCard({
         </Drawer>
       </CardContent>
 
-      <CardFooter className="flex justify-end bg-muted px-2 py-1">
+      <CardFooter className="flex justify-end rounded-b-lg bg-muted px-2 py-1">
         <Button
           variant="ghost"
           className="hover:bg-destructive hover:text-destructive-foreground [&>svg]:hover:opacity-100"
