@@ -4,14 +4,13 @@ const useMultipleChoice = (blockId: string) => {
   const { data: block } = useBlockRead(blockId)
   const { mutate: updateBlock } = useBlockUpdate()
 
-  // const choices = block?.input?.choices ?? []
-
-  const choices: { id: string; value: string }[] = []
+  const input = (block?.input as { choices: any[] }) ?? {}
+  const choices = input.choices ?? []
 
   const updateBlockChoices = (newChoices: typeof choices) => {
     const newInput = {
       variant: 'single-choice',
-      // ...block.input,
+      ...input,
       choices: newChoices,
     }
     updateBlock({
