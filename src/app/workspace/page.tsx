@@ -1,7 +1,9 @@
-import { redirect } from 'next/navigation'
-import { createClient } from '@/utils/supabase/server'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
+
+import { createClient } from '@/utils/supabase/server'
 import { Button } from '@/components/ui/button'
+import { DesktopView, MobileView } from '@/components/responsive'
 
 import FormTable from './form-table'
 import CreateFormButton from './create-form-button'
@@ -31,12 +33,12 @@ export default async function Page() {
       </header>
       <main className="-mx-2 flex-grow bg-muted py-4">
         <div className="container">
-          <div className="hidden lg:block">
-            <FormTable />
-          </div>
-          <div className="block lg:hidden">
+          <MobileView>
             <FormCards />
-          </div>
+          </MobileView>
+          <DesktopView>
+            <FormTable />
+          </DesktopView>
         </div>
       </main>
     </div>
