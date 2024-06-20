@@ -5,6 +5,6 @@ export default function useBlockNavigator() {
 
   return {
     currentBlockId: getSearchParams('block'),
-    openBlock: (id: string) => updateSearchParams('block', id),
+    updateActiveBlockId: (id: string) => updateSearchParams('block', id),
   }
 }

@@ -11,20 +11,31 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { useBlockTypes } from '@/lib/use-block'
+import { cn } from '@/utils/cn'
 
 type AddBlockButtonProps = {
+  variant?: 'mobile' | 'desktop'
   onAdd?: Function
 }
 
-export default function AddBlockButton({ onAdd }: AddBlockButtonProps) {
+export default function AddBlockButton({
+  onAdd,
+  variant = 'mobile',
+}: AddBlockButtonProps) {
   const { data: blockTypes } = useBlockTypes()
+  const isMobile = variant === 'mobile'
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
           size={'icon'}
-          className="bg-accent-foreground text-accent hover:bg-accent-foreground/90"
+          variant={isMobile ? 'default' : 'ghost'}
+          className={cn(
+            isMobile
+              ? 'bg-accent-foreground text-accent hover:bg-accent-foreground/90'
+              : 'hover:bg-accent-foreground/10',
+          )}
         >
           <Plus strokeWidth={3} className="h-4 w-4" />
         </Button>
