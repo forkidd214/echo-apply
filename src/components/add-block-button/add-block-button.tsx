@@ -10,8 +10,9 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { useBlockTypes } from '@/lib/use-block'
+import { useBlockCreate, useBlockList, useBlockTypes } from '@/lib/use-block'
 import { cn } from '@/utils/cn'
+import { useParams } from 'next/navigation'
 
 type AddBlockButtonProps = {
   variant?: 'mobile' | 'desktop'
@@ -22,8 +23,28 @@ export default function AddBlockButton({
   onAdd,
   variant = 'mobile',
 }: AddBlockButtonProps) {
+  // get form ID from slug
+  const { slug } = useParams()
+  const formId = typeof slug === 'string' ? slug : slug[0]
+
+  // block hooks
+  const { data: blocks } = useBlockList(formId)
+  const { mutate: createBlock } = useBlockCreate()
   const { data: blockTypes } = useBlockTypes()
+
   const isMobile = variant === 'mobile'
+
+  const handleBlockAdd = (blockTypeId: string) => {
+    const newBlock = {
+      form_id: formId,
+      block_type_id: blockTypeId,
+      index: 1 + (blocks?.length ?? 0),
+    }
+
+    createBlock(newBlock)
+
+    onAdd && onAdd(newBlock)
+  }
 
   return (
     <Dialog>
@@ -52,7 +73,7 @@ export default function AddBlockButton({
                 <Button
                   variant={'ghost'}
                   className="w-full justify-start gap-2"
-                  onClick={() => onAdd && onAdd({ block_type_id: bt.id })}
+                  onClick={() => handleBlockAdd(bt.id)}
                 >
                   <FileQuestion />
                   {bt.name}

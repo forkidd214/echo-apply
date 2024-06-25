@@ -1,17 +1,30 @@
+import React from 'react'
+
 import { Card, CardDescription, CardHeader } from '@/components/ui/card'
 import { useBlockRead } from '@/lib/use-block'
+import useBlockNavigator from '@/components/block/use-block-navigator'
+import { cn } from '@/utils/cn'
 
 type BlockThumnailCardProps = {
-  id: string
+  block: NonNullable<(ReturnType<typeof useBlockRead>)['data']>
+  className?: string
 }
 
-export default function BlockThumnailCard({ id }: BlockThumnailCardProps) {
-  const { data: block } = useBlockRead(id)
+export default React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & BlockThumnailCardProps
+>(function BlockThumnailCard({ block, className }, ref) {
+  // const { data: block } = useBlockRead(id)
+  const { updateActiveBlockId } = useBlockNavigator()
 
-  if (!block) return null
+  // if (!block) return null
 
   return (
-    <Card>
+    <Card
+      ref={ref}
+      className={cn(className)}
+      onClick={() => updateActiveBlockId(block.id)}
+    >
       <CardHeader>
         <CardDescription>
           <span>{block.index}</span>
@@ -21,4 +34,4 @@ export default function BlockThumnailCard({ id }: BlockThumnailCardProps) {
       </CardHeader>
     </Card>
   )
-}
+})

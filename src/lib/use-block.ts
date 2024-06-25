@@ -4,10 +4,13 @@ import {
   useQuery,
   // useSuspenseQuery,
   useMutation,
+  QueryKey,
+  Updater,
 } from '@tanstack/react-query'
 
 import type { Database } from '@/utils/supabase/database.types'
 import { createClient } from '@/utils/supabase/client'
+import { list } from '@/utils/json-server'
 
 type BlocksDataType = Database['public']['Tables']['blocks']
 
@@ -84,16 +87,43 @@ const updateBlock = async (
   ).data
 }
 
+const updateBlockMany = async (
+  blocks: Awaited<ReturnType<typeof listBlocksByFormId>>,
+) => {
+  // extract pre added {type} property
+  const blocksToUpdate = blocks.map((block) => {
+    const { type, ...others } = block
+    return others
+  })
+
+  return (
+    (
+      await supabase
+        .from('blocks')
+        .upsert(blocksToUpdate)
+        .select()
+        .throwOnError()
+    ).data ?? []
+  )
+}
+
 const deleteBlock = async (id: string) =>
   await supabase.from('blocks').delete().eq('id', id).throwOnError()
 
 /* ========== helpers ========== */
+const sortBlocks = (blocks: Awaited<ReturnType<typeof listBlocksByFormId>>) =>
+  [...blocks].sort((b1, b2) => {
+    if (b1.index === null) return -1
+    if (b2.index === null) return 1
+    return b1.index - b2.index
+  }) // sort by index
 
 /* ========== hooks ========== */
 function useBlockList(formId: string) {
   return useQuery({
     queryKey: blockKeys.list({ formId }),
     queryFn: listBlocksByFormId,
+    select: sortBlocks,
     refetchOnMount: 'always', // client side supabase doesn't have cookies for authenticated data fetching. See https://github.com/TanStack/query/issues/6116#issuecomment-1904051005 for details
   })
 }
@@ -121,6 +151,7 @@ function useBlockCreate() {
     },
   })
 }
+
 function useBlockUpdate() {
   const queryClient = useQueryClient()
   return useMutation({
@@ -129,6 +160,91 @@ function useBlockUpdate() {
       queryClient.invalidateQueries({
         queryKey: blockKeys.detail(variables.id),
       })
+    },
+    onMutate: async (newBlock) => {
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({ queryKey: blockKeys.lists() })
+
+      // Snapshot the previous value
+      const previousLists = queryClient.getQueriesData({
+        queryKey: blockKeys.lists(),
+      })
+
+      // Optimistically update to the new value
+      queryClient.setQueriesData<BlocksDataType['Row'][]>(
+        { queryKey: blockKeys.lists() },
+        (oldBlocks) =>
+          oldBlocks?.map((b) =>
+            b.id === newBlock.id ? { ...b, ...newBlock } : b,
+          ),
+      )
+
+      // Return a context object with the snapshotted value
+      return { previousLists }
+    },
+    // If the mutation fails,
+    // use the context returned from onMutate to roll back
+    onError: (err, newBlock, context) => {
+      queryClient.setQueriesData(
+        { queryKey: blockKeys.lists() },
+        context?.previousLists,
+      )
+    },
+    // onSuccess: (data, variables) => {
+    //   const lists = queryClient.getQueriesData({
+    //     queryKey: blockKeys.lists(),
+    //   }) as [QueryKey, BlocksDataType['Row'][]][]
+    //   lists.forEach(([key, blocks]) => {
+    //     const newBlocks = blocks.map((b) => (b.id === variables.id ? data : b))
+    //     queryClient.setQueryData(key, newBlocks)
+    //   })
+    // },
+  })
+}
+
+function useBlockUpdateMany() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: updateBlockMany,
+    onSettled: (_, __, variables) => {
+      queryClient.invalidateQueries({ queryKey: blockKeys.lists() })
+      variables.forEach(({ id }) =>
+        queryClient.invalidateQueries({
+          queryKey: blockKeys.detail(id),
+        }),
+      )
+    },
+    onMutate: async (newBlocks) => {
+      // Cancel any outgoing refetches
+      // (so they don't overwrite our optimistic update)
+      await queryClient.cancelQueries({ queryKey: blockKeys.lists() })
+
+      // Snapshot the previous value
+      const previousLists = queryClient.getQueriesData({
+        queryKey: blockKeys.lists(),
+      })
+
+      // Optimistically update to the new value
+      queryClient.setQueriesData<BlocksDataType['Row'][]>(
+        { queryKey: blockKeys.lists() },
+        (oldBlocks) =>
+          oldBlocks?.map((oldBlock) => {
+            const newBlock = newBlocks.find((b) => b.id === oldBlock.id)
+            return !!newBlock ? { ...oldBlock, ...newBlock } : oldBlock
+          }),
+      )
+
+      // Return a context object with the snapshotted value
+      return { previousLists }
+    },
+    // If the mutation fails,
+    // use the context returned from onMutate to roll back
+    onError: (err, newBlock, context) => {
+      queryClient.setQueriesData(
+        { queryKey: blockKeys.lists() },
+        context?.previousLists,
+      )
     },
   })
 }
@@ -158,6 +274,7 @@ export {
   useBlockCreate,
   useBlockRead,
   useBlockUpdate,
+  useBlockUpdateMany,
   useBlockDelete,
   useBlockTypes,
 }
