@@ -191,15 +191,6 @@ function useBlockUpdate() {
         context?.previousLists,
       )
     },
-    // onSuccess: (data, variables) => {
-    //   const lists = queryClient.getQueriesData({
-    //     queryKey: blockKeys.lists(),
-    //   }) as [QueryKey, BlocksDataType['Row'][]][]
-    //   lists.forEach(([key, blocks]) => {
-    //     const newBlocks = blocks.map((b) => (b.id === variables.id ? data : b))
-    //     queryClient.setQueryData(key, newBlocks)
-    //   })
-    // },
   })
 }
 
