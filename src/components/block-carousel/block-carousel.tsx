@@ -45,14 +45,14 @@ export default function BlockCarousel({
         watchDrag: true, // set to false if disable drag and wheel
       }}
       orientation="vertical"
-      className="h-screen w-full"
+      className="h-full w-full"
       setApi={setApi}
     >
       <Progress
         value={progress}
         className="absolute top-0 w-full rounded-none"
       />
-      <CarouselContent className="h-screen">
+      <CarouselContent className="h-full">
         {blocks.map((block) => (
           <CarouselItem key={block.id}>
             {renderBlock(block.id, {

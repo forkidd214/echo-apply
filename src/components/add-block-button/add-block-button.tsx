@@ -58,10 +58,10 @@ export default function AddBlockButton({
               : 'hover:bg-accent-foreground/10',
           )}
         >
-          <Plus strokeWidth={3} className="h-4 w-4" />
+          <Plus />
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent onCloseAutoFocus={(evt) => evt.preventDefault()}>
         <DialogHeader>
           <DialogTitle>Question types</DialogTitle>
         </DialogHeader>
