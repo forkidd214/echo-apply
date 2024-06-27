@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { createClient } from '@/utils/supabase/client'
 import { type User } from '@supabase/supabase-js'
 
-export default function AccountForm({ user }: { user: User | null }) {
+export default function AccountForm({ user }: { user: User }) {
   const supabase = createClient()
   const [loading, setLoading] = useState(true)
   const [fullname, setFullname] = useState<string | null>(null)
@@ -17,7 +17,7 @@ export default function AccountForm({ user }: { user: User | null }) {
       const { data, error, status } = await supabase
         .from('users')
         .select(`full_name, avatar_url`)
-        .eq('id', user?.id)
+        .eq('id', user.id)
         .single()
 
       if (error && status !== 406) {
@@ -57,7 +57,7 @@ export default function AccountForm({ user }: { user: User | null }) {
           avatar_url: avatarUrl,
           updated_at: new Date().toISOString(),
         })
-        .eq('id', user?.id)
+        .eq('id', user.id)
         .select()
       if (error) throw error
       alert('Profile updated!')
@@ -72,7 +72,7 @@ export default function AccountForm({ user }: { user: User | null }) {
     <div className="form-widget">
       <div>
         <label htmlFor="email">Email</label>
-        <input id="email" type="text" value={user?.email} disabled />
+        <input id="email" type="text" value={user.email} disabled />
       </div>
       <div>
         <label htmlFor="fullName">Full Name</label>
