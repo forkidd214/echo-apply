@@ -10,7 +10,6 @@ import {
 
 import type { Database } from '@/utils/supabase/database.types'
 import { createClient } from '@/utils/supabase/client'
-import { list } from '@/utils/json-server'
 
 type BlocksDataType = Database['public']['Tables']['blocks']
 

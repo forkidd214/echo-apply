@@ -19,7 +19,7 @@ export default function FormLayout({ children }: FormLayoutProps) {
         )}
       >
         <div className="flex gap-2">
-          <BackButton href='/workspace' />
+          <BackButton href="/workspace" />
           <FormTitleInput />
         </div>
         <div className="flex gap-2">
