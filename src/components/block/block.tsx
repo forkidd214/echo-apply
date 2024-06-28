@@ -4,7 +4,6 @@ import { useBlockRead } from '@/lib/use-block'
 import { BlockStatus } from '@/components/block-common'
 
 import BlockWrapper from './block-wrapper'
-import { type } from 'os'
 
 type BlockProps = {
   id: string

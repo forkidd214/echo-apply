@@ -34,10 +34,10 @@ export default function AddBlockButton({
 
   const isMobile = variant === 'mobile'
 
-  const handleBlockAdd = (blockTypeId: string) => {
+  const handleBlockAdd = (type: string) => {
     const newBlock = {
       form_id: formId,
-      block_type_id: blockTypeId,
+      type,
       index: 1 + (blocks?.length ?? 0),
     }
 
@@ -67,16 +67,16 @@ export default function AddBlockButton({
         </DialogHeader>
 
         <ul className="space-y-2">
-          {blockTypes?.map((bt) => (
-            <li key={bt.id}>
+          {blockTypes?.map(({ type }) => (
+            <li key={type}>
               <DialogClose asChild>
                 <Button
                   variant={'ghost'}
                   className="w-full justify-start gap-2"
-                  onClick={() => handleBlockAdd(bt.id)}
+                  onClick={() => handleBlockAdd(type)}
                 >
                   <FileQuestion />
-                  {bt.name}
+                  {type}
                 </Button>
               </DialogClose>
             </li>

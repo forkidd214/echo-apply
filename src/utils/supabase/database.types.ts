@@ -36,61 +36,58 @@ export type Database = {
     Tables: {
       block_types: {
         Row: {
-          id: string
-          name: string
+          type: string
         }
         Insert: {
-          id?: string
-          name: string
+          type: string
         }
         Update: {
-          id?: string
-          name?: string
+          type?: string
         }
         Relationships: []
       }
       blocks: {
         Row: {
-          block_type_id: string
           description: string | null
           form_id: string
           id: string
           index: number | null
           input: Json | null
           title: string | null
+          type: string
         }
         Insert: {
-          block_type_id: string
           description?: string | null
           form_id: string
           id?: string
           index?: number | null
           input?: Json | null
           title?: string | null
+          type: string
         }
         Update: {
-          block_type_id?: string
           description?: string | null
           form_id?: string
           id?: string
           index?: number | null
           input?: Json | null
           title?: string | null
+          type?: string
         }
         Relationships: [
-          {
-            foreignKeyName: "public_blocks_block_type_id_fkey"
-            columns: ["block_type_id"]
-            isOneToOne: false
-            referencedRelation: "block_types"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "public_blocks_form_id_fkey"
             columns: ["form_id"]
             isOneToOne: false
             referencedRelation: "forms"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_blocks_type_fkey"
+            columns: ["type"]
+            isOneToOne: false
+            referencedRelation: "block_types"
+            referencedColumns: ["type"]
           },
         ]
       }
@@ -100,21 +97,21 @@ export type Database = {
           id: string
           name: string | null
           updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
           name?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: string
           name?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {

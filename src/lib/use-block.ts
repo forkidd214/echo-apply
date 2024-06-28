@@ -34,7 +34,7 @@ const listBlocksByFormId = async ({
     (
       await supabase
         .from('blocks')
-        .select(`*, ...block_types(type:name)`)
+        .select()
         .eq('form_id', formId)
         .throwOnError()
     ).data ?? []
@@ -46,12 +46,7 @@ const readBlock = async ({
 }: QueryFunctionContext<ReturnType<(typeof blockKeys)['detail']>>) => {
   const [, , id] = queryKey
   return (
-    await supabase
-      .from('blocks')
-      .select(`*, ...block_types(type:name)`)
-      .eq('id', id)
-      .single()
-      .throwOnError()
+    await supabase.from('blocks').select().eq('id', id).single().throwOnError()
   ).data
 }
 
@@ -89,20 +84,9 @@ const updateBlock = async (
 const updateBlockMany = async (
   blocks: Awaited<ReturnType<typeof listBlocksByFormId>>,
 ) => {
-  // extract pre added {type} property
-  const blocksToUpdate = blocks.map((block) => {
-    const { type, ...others } = block
-    return others
-  })
-
   return (
-    (
-      await supabase
-        .from('blocks')
-        .upsert(blocksToUpdate)
-        .select()
-        .throwOnError()
-    ).data ?? []
+    (await supabase.from('blocks').upsert(blocks).select().throwOnError())
+      .data ?? []
   )
 }
 
