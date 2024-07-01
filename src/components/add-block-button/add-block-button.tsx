@@ -13,6 +13,8 @@ import { Button } from '@/components/ui/button'
 import { useBlockCreate, useBlockList, useBlockTypes } from '@/lib/use-block'
 import { cn } from '@/utils/cn'
 import { useParams } from 'next/navigation'
+import { makeAttributesShortText } from '@/components/block-variant-short-text'
+import { makeAttributesMultipleChoice } from '@/components/block-variant-multiple-choice'
 
 type AddBlockButtonProps = {
   variant?: 'mobile' | 'desktop'
@@ -34,11 +36,19 @@ export default function AddBlockButton({
 
   const isMobile = variant === 'mobile'
 
-  const handleBlockAdd = (type: string) => {
+  const handleBlockAdd = (type: BlockType) => {
+    const attributes =
+      type === 'SHORT_TEXT'
+        ? makeAttributesShortText()
+        : type === 'MULTIPLE_CHOICE'
+          ? makeAttributesMultipleChoice()
+          : {}
+
     const newBlock = {
       form_id: formId,
-      type,
       index: 1 + (blocks?.length ?? 0),
+      type,
+      attributes,
     }
 
     createBlock(newBlock)
@@ -73,7 +83,7 @@ export default function AddBlockButton({
                 <Button
                   variant={'ghost'}
                   className="w-full justify-start gap-2"
-                  onClick={() => handleBlockAdd(type)}
+                  onClick={() => handleBlockAdd(type as BlockType)}
                 >
                   <FileQuestion />
                   {type}
@@ -87,7 +97,8 @@ export default function AddBlockButton({
   )
 }
 
-/* const BLOCK_TYPES = [
+// possible types
+const BLOCK_TYPES = [
   'WELCOME',
   'END',
   'SHORT_TEXT',
@@ -96,4 +107,5 @@ export default function AddBlockButton({
   'MULTIPLE_CHOICE',
   'CONTACT_INFO',
   'DATE',
-] */
+] as const
+type BlockType = (typeof BLOCK_TYPES)[number]

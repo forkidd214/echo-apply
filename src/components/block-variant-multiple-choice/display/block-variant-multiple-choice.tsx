@@ -7,15 +7,15 @@ import Choice from './choice'
 import AddChoceButton from './add-choice-button'
 import useMultipleChoice from './use-multiple-choice'
 
-type BlockInputMultipleChoiceProps = {
+type BlockVariantMultipleChoiceProps = {
   id: string
   status: BlockStatus
 }
 
-export default function BlockInputMultipleChoice({
+export default function BlockVariantMultipleChoice({
   id,
   status,
-}: BlockInputMultipleChoiceProps) {
+}: BlockVariantMultipleChoiceProps) {
   const { choices, addChoice, updateChoice, deleteChoice } =
     useMultipleChoice(id)
   const isEditing = status === 'EDIT'

@@ -1,21 +1,21 @@
 import { useBlockUpdate, useBlockRead } from '@/lib/use-block'
 
+import type { Attributes } from '../types'
+
 const useMultipleChoice = (blockId: string) => {
   const { data: block } = useBlockRead(blockId)
   const { mutate: updateBlock } = useBlockUpdate()
 
-  const input = (block?.input as { choices: any[] }) ?? {}
-  const choices = input.choices ?? []
+  const attributes = (block?.attributes as Attributes) ?? {}
+  const choices = attributes?.choices ?? []
 
   const updateBlockChoices = (newChoices: typeof choices) => {
-    const newInput = {
-      variant: 'single-choice',
-      ...input,
-      choices: newChoices,
-    }
     updateBlock({
       id: blockId,
-      input: newInput,
+      attributes: {
+        ...attributes,
+        choices: newChoices,
+      },
     })
   }
 

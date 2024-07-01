@@ -48,29 +48,29 @@ export type Database = {
       }
       blocks: {
         Row: {
+          attributes: Json | null
           description: string | null
           form_id: string
           id: string
           index: number | null
-          input: Json | null
           title: string | null
           type: string
         }
         Insert: {
+          attributes?: Json | null
           description?: string | null
           form_id: string
           id?: string
           index?: number | null
-          input?: Json | null
           title?: string | null
           type: string
         }
         Update: {
+          attributes?: Json | null
           description?: string | null
           form_id?: string
           id?: string
           index?: number | null
-          input?: Json | null
           title?: string | null
           type?: string
         }

@@ -4,11 +4,13 @@ import { useState } from 'react'
 
 import { BlockStatus, BlockTextEditor } from '@/components/block-common'
 
-type BlockInputTextProps = {
+type BlockVariantShortTextProps = {
   status: BlockStatus
 }
 
-export default function BlockInputText({ status }: BlockInputTextProps) {
+export default function BlockVariantShortText({
+  status,
+}: BlockVariantShortTextProps) {
   const [value, setValue] = useState('')
 
   return (
@@ -18,6 +20,7 @@ export default function BlockInputText({ status }: BlockInputTextProps) {
       variant={'answer'}
       placeholder="Type your answer here..."
       disabled={status === 'EDIT'}
+      hasNoLineBreak={true}
     />
   )
 }

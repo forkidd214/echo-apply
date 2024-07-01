@@ -1,5 +1,5 @@
-import BlockInputText from '@/components/block-input-text'
-import BlockInputMultipleChoice from '@/components/block-input-multiple-choice'
+import { BlockVariantMultipleChoice } from '@/components/block-variant-multiple-choice'
+import { BlockVariantShortText } from '@/components/block-variant-short-text'
 import { useBlockRead } from '@/lib/use-block'
 import { BlockStatus } from '@/components/block-common'
 
@@ -16,25 +16,25 @@ export default function Block({ id, status, onNext }: BlockProps) {
 
   if (!block) return null
 
-  let blockInputFields
+  let variant
 
   switch (block.type) {
     case 'SHORT_TEXT':
-      blockInputFields = <BlockInputText status={status} />
+      variant = <BlockVariantShortText status={status} />
       break
 
     case 'MULTIPLE_CHOICE':
-      blockInputFields = <BlockInputMultipleChoice id={id} status={status} />
+      variant = <BlockVariantMultipleChoice id={id} status={status} />
       break
 
     default:
-      blockInputFields = `Block type ${block.type} is under construction`
+      variant = `Block type ${block.type} is under construction`
       break
   }
 
   return (
     <BlockWrapper id={id} status={status} onNext={onNext}>
-      {blockInputFields}
+      {variant}
     </BlockWrapper>
   )
 }
