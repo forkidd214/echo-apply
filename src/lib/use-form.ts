@@ -12,7 +12,10 @@ import {
   useMutation,
 } from '@tanstack/react-query'
 
+import type { Database } from '@/utils/supabase/database.types'
 import { createClient } from '@/utils/supabase/client'
+
+type FormsDataType = Database['public']['Tables']['forms']
 
 const supabase = createClient()
 
@@ -44,11 +47,17 @@ const readForm = async ({
   ).data
 }
 
-const createForm = async (form: { name: string }) =>
-  (await supabase.from('forms').insert([form]).select().single().throwOnError())
-    .data
+const createForm = async (form: Partial<FormsDataType['Insert']>) =>
+  (
+    await supabase
+      .from('forms')
+      .insert([{ ...form } as any]) // form.user_id will be auto-filled by postgres triggers
+      .select()
+      .single()
+      .throwOnError()
+  ).data
 
-const updateForm = async (form: { id: string; name: string }) => {
+const updateForm = async (form: FormsDataType['Update'] & { id: string }) => {
   const { id, ...rest } = form
   return (
     await supabase
