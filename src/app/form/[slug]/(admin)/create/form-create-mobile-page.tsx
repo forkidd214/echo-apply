@@ -4,7 +4,7 @@ import Block from '@/components/block'
 import BlockCard from '@/components/block-card'
 import useBlockNavigator from '@/components/block/use-block-navigator'
 import { MobileView } from '@/components/responsive'
-import { useBlockCreate, useBlockDelete, useBlockList } from '@/lib/use-block'
+import { useBlockDelete, useBlockList } from '@/lib/use-block'
 
 export default function FormCreateMobilePage() {
   // get form ID from slug
@@ -13,7 +13,6 @@ export default function FormCreateMobilePage() {
 
   // block hooks
   const { data: blocks } = useBlockList(formId)
-  const { mutate: createBlock } = useBlockCreate()
   const { mutate: deleteBlock } = useBlockDelete()
   const { updateActiveBlockId } = useBlockNavigator()
 

@@ -39,7 +39,7 @@ export default React.forwardRef<
     >
       <CardContent className="flex items-center justify-between gap-2 p-2 pl-4">
         <CardDescription className="truncate">
-          {`${block.index}. ${block.title}`}
+          {`${block.index}. ${block.title ?? ''}`}
         </CardDescription>
 
         <DropdownMenu>

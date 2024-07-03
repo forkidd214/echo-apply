@@ -37,6 +37,7 @@ export default function AddBlockButton({
   const isMobile = variant === 'mobile'
 
   const handleBlockAdd = (type: BlockType) => {
+    // make default attributes json cloumn based on types
     const attributes =
       type === 'SHORT_TEXT'
         ? makeAttributesShortText()
@@ -47,6 +48,7 @@ export default function AddBlockButton({
     const newBlock = {
       form_id: formId,
       index: 1 + (blocks?.length ?? 0),
+      title: '...',
       type,
       attributes,
     }
