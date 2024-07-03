@@ -32,7 +32,7 @@ export default function BlockVariantMultipleChoice({
           <Choice
             status={status}
             value={value}
-            shortcut={getShortCutByIndex(index)}
+            shortcut={getShortcutByIndex(index)}
             onDelete={() => deleteChoice(id)}
             onSubmit={(newChoice) =>
               updateChoice({
@@ -53,7 +53,7 @@ export default function BlockVariantMultipleChoice({
   )
 }
 
-const getShortCutByIndex = (index: number) => {
-  const SHORT_CUTS = 'ABCDEFG'
+const getShortcutByIndex = (index: number) => {
+  const SHORT_CUTS = 'ABCDEFGHIJK'
   return SHORT_CUTS[index % SHORT_CUTS.length]
 }

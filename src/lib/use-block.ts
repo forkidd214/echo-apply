@@ -139,39 +139,36 @@ function useBlockUpdate() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: updateBlock,
-    onSettled: (_, __, variables) => {
+    onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: blockKeys.detail(variables.id),
+        queryKey: blockKeys.all,
       })
     },
     onMutate: async (newBlock) => {
+      const queryKey = blockKeys.detail(newBlock.id)
+
       // Cancel any outgoing refetches
       // (so they don't overwrite our optimistic update)
-      await queryClient.cancelQueries({ queryKey: blockKeys.lists() })
+      await queryClient.cancelQueries({ queryKey })
 
       // Snapshot the previous value
-      const previousLists = queryClient.getQueriesData({
-        queryKey: blockKeys.lists(),
-      })
+      const previousValue = queryClient.getQueryData(queryKey)
 
       // Optimistically update to the new value
-      queryClient.setQueriesData<BlocksDataType['Row'][]>(
-        { queryKey: blockKeys.lists() },
-        (oldBlocks) =>
-          oldBlocks?.map((b) =>
-            b.id === newBlock.id ? { ...b, ...newBlock } : b,
-          ),
+      queryClient.setQueryData<BlocksDataType['Update']>(
+        queryKey,
+        (oldBlock) => ({ ...oldBlock, ...newBlock }),
       )
 
       // Return a context object with the snapshotted value
-      return { previousLists }
+      return { previousValue }
     },
     // If the mutation fails,
     // use the context returned from onMutate to roll back
     onError: (err, newBlock, context) => {
-      queryClient.setQueriesData(
-        { queryKey: blockKeys.lists() },
-        context?.previousLists,
+      queryClient.setQueryData(
+        blockKeys.detail(newBlock.id),
+        context?.previousValue,
       )
     },
   })
