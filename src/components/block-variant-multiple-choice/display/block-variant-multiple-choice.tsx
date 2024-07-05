@@ -24,7 +24,7 @@ export default function BlockVariantMultipleChoice({
     <ul
       className={cn(
         'isolate grid gap-2',
-        'grid-cols-[repeat(auto-fit,minmax(min(10em,100%),20em))] text-base',
+        'grid-cols-[repeat(auto-fill,minmax(max(10em,30%),1fr))] text-base',
       )}
     >
       {choices.map(({ id, value }, index) => (

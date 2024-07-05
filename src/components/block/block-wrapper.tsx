@@ -31,12 +31,12 @@ export default function BlockWrapper({
     updateBlock({ id: block.id, ...patch })
 
   return (
-    <div className="flex h-full w-full flex-col px-10">
+    <div className="mx-auto flex h-full w-full max-w-3xl flex-col px-10">
       <section className="relative my-auto">
         <CounterWrapper>
           <BlockCounter value={block.index ?? -1} />
         </CounterWrapper>
-        <div className="space-y-8 ">
+        <div className="space-y-8">
           <HeaderWrapper>
             <BlockTitle
               value={block.title ?? ''}
