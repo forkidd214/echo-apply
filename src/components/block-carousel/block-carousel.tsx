@@ -42,7 +42,16 @@ export default function BlockCarousel({
   return (
     <Carousel
       opts={{
-        watchDrag: true, // set to false if disable drag and wheel
+        watchDrag: (_, evt: any) => {
+          if (
+            !evt.target.isContentEditable &&
+            evt.target.tagName === ('DIV' || 'SECTION')
+          ) {
+            return true
+          } else {
+            return false
+          }
+        }, // set to false if disable drag and wheel
       }}
       orientation="vertical"
       className="h-full w-full"
