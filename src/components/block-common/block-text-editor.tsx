@@ -1,4 +1,9 @@
-import React, { FocusEvent, ClipboardEvent, KeyboardEvent } from 'react'
+import React, {
+  FocusEvent,
+  ClipboardEvent,
+  KeyboardEvent,
+  forwardRef,
+} from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import ContentEditable, {
@@ -34,88 +39,97 @@ export interface BlockTextEditorProps
     >,
     VariantProps<typeof blockTextEditorVariants> {
   value: string
-  setValue: (newValue: string) => void
+  setValue?: (newValue: string) => void // use either setValue or onChange to update state
   onChange?: (event: ContentEditableEvent) => void
   placeholder?: string
   hasNoLineBreak?: boolean
 }
 
-export default function BlockTextEditor({
-  value,
-  setValue,
-  onChange,
-  variant,
-  className,
-  placeholder = 'Edit me...', // a hint of where it is
-  hasNoLineBreak,
-  ...props
-}: BlockTextEditorProps) {
-  /**
-   * trim
-   */
-  const handleChange = (evt: ContentEditableEvent) => {
-    const trim = (text: string) => {
-      // no solo line break
-      if (text === '<br>') {
-        return ''
+const BlockTextEditor = forwardRef<HTMLSpanElement, BlockTextEditorProps>(
+  (
+    {
+      value,
+      setValue,
+      onChange,
+      variant,
+      className,
+      placeholder = 'Edit me...', // a hint of where it is
+      hasNoLineBreak,
+      ...props
+    },
+    ref,
+  ) => {
+    /**
+     * trim
+     */
+    const handleChange = (evt: ContentEditableEvent) => {
+      const trim = (text: string) => {
+        // no solo line break
+        if (text === '<br>') {
+          return ''
+        }
+
+        if (hasNoLineBreak) {
+          return text.replace(/<br>/g, ' ')
+        }
+
+        return text
       }
+
+      const trimmed = trim(evt.target.value)
+      evt.target.value = trimmed
+
+      // emit change
+      setValue && setValue(trimmed)
+      onChange && onChange(evt)
+    }
+
+    // const handleBlur = (evt: FocusEvent<HTMLElement>) => {
+    //   // console.log(value) // or plainText: evt.currentTarget.textContent
+    // }
+
+    /**
+     * only allowed paste plain text
+     */
+    const handlePaste = (evt: ClipboardEvent<HTMLElement>) => {
+      evt.preventDefault()
+      let text = evt.clipboardData.getData('text/plain')
 
       if (hasNoLineBreak) {
-        return text.replace(/<br>/g, ' ')
+        const temp = document.createElement('div')
+        temp.innerHTML = text
+        text = temp.innerText
       }
 
-      return text
+      document.execCommand('insertText', false, text)
     }
 
-    const trimmed = trim(evt.target.value)
-    evt.target.value = trimmed
-
-    // emit change
-    setValue(trimmed)
-    onChange && onChange(evt)
-  }
-
-  // const handleBlur = (evt: FocusEvent<HTMLElement>) => {
-  //   // console.log(value) // or plainText: evt.currentTarget.textContent
-  // }
-
-  /**
-   * only allowed paste plain text
-   */
-  const handlePaste = (evt: ClipboardEvent<HTMLElement>) => {
-    evt.preventDefault()
-    let text = evt.clipboardData.getData('text/plain')
-
-    if (hasNoLineBreak) {
-      const temp = document.createElement('div')
-      temp.innerHTML = text
-      text = temp.innerText
+    /**
+     * prevent input line break
+     */
+    const handleKeyDown = (evt: KeyboardEvent<HTMLElement>) => {
+      if (hasNoLineBreak && evt.key === 'Enter') {
+        evt.preventDefault()
+      }
     }
 
-    document.execCommand('insertText', false, text)
-  }
+    return (
+      <ContentEditable
+        className={cn(blockTextEditorVariants({ variant, className }))}
+        onPointerDown={(evt) => evt.stopPropagation()} // disable drawer actions
+        tagName="span"
+        // onBlur={handleBlur} // emit change to server
+        {...props}
+        data-placeholder={placeholder}
+        html={value}
+        onChange={handleChange}
+        onPaste={handlePaste}
+        onKeyDown={handleKeyDown}
+        ref={ref}
+      />
+    )
+  },
+)
+BlockTextEditor.displayName = 'BlockTextEditor'
 
-  /**
-   * prevent input line break
-   */
-  const handleKeyDown = (evt: KeyboardEvent<HTMLElement>) => {
-    if (hasNoLineBreak && evt.key === 'Enter') {
-      evt.preventDefault()
-    }
-  }
-
-  return (
-    <ContentEditable
-      className={cn(blockTextEditorVariants({ variant, className }))}
-      onPointerDown={(evt) => evt.stopPropagation()} // disable drawer actions
-      tagName="span"
-      // onBlur={handleBlur} // emit change to server
-      {...props}
-      data-placeholder={placeholder}
-      html={value}
-      onChange={handleChange}
-      onPaste={handlePaste}
-      onKeyDown={handleKeyDown}
-    />
-  )
-}
+export default BlockTextEditor
