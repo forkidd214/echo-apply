@@ -5,6 +5,7 @@ import BlockCounter from './block-counter'
 import BlockTitle from './block-title'
 import BlockDescription from './block-description'
 import BlockButton from './block-button'
+import BlockMessage from './block-message'
 
 export type * from './types'
 export type { ContentEditableEvent } from '@/components/content-editable'
@@ -15,4 +16,5 @@ export {
   BlockTitle,
   BlockDescription,
   BlockButton,
+  BlockMessage,
 }

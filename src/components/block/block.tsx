@@ -20,7 +20,7 @@ export default function Block({ id, status, onNext }: BlockProps) {
 
   switch (block.type) {
     case 'SHORT_TEXT':
-      variant = <BlockVariantShortText status={status} />
+      variant = <BlockVariantShortText id={id} status={status} />
       break
 
     case 'MULTIPLE_CHOICE':

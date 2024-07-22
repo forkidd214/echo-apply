@@ -1,26 +1,45 @@
 'use client'
 
-import { useState } from 'react'
+import { Controller, useFormContext } from 'react-hook-form'
 
-import { BlockStatus, BlockTextEditor } from '@/components/block-common'
+import {
+  BlockMessage,
+  BlockStatus,
+  BlockTextEditor,
+} from '@/components/block-common'
+import React from 'react'
 
 type BlockVariantShortTextProps = {
+  id: string
   status: BlockStatus
 }
 
 export default function BlockVariantShortText({
+  id,
   status,
 }: BlockVariantShortTextProps) {
-  const [value, setValue] = useState('')
+  const { control } = useFormContext()
 
   return (
-    <BlockTextEditor
-      value={value}
-      setValue={setValue}
-      variant={'answer'}
-      placeholder="Type your answer here..."
-      disabled={status === 'EDIT'}
-      hasNoLineBreak={true}
+    <Controller
+      name={id}
+      defaultValue={''}
+      control={control}
+      shouldUnregister
+      render={({ field, fieldState }) => (
+        <>
+          <BlockTextEditor
+            variant={'answer'}
+            placeholder="Type your answer here..."
+            hasNoLineBreak={true}
+            disabled={status === 'EDIT'}
+            {...field}
+          />
+          {fieldState.error && (
+            <BlockMessage>{fieldState.error.message}</BlockMessage>
+          )}
+        </>
+      )}
     />
   )
 }
