@@ -6,7 +6,7 @@ type AddChoiceButtonProps = {
   onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
-export default function AddChoceButton({ onClick }: AddChoiceButtonProps) {
+export default function AddChoiceButton({ onClick }: AddChoiceButtonProps) {
   return (
     <Button
       variant={'link'}

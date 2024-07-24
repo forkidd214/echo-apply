@@ -6,12 +6,11 @@ import { cn } from '@/utils/cn'
 
 interface DeleteChoiceButton extends ComponentPropsWithRef<typeof Button> {
   isHidden?: boolean
-  onDelete?: Function
 }
 
 export default function DeleteChoiceButton({
   isHidden = false,
-  onDelete,
+  onClick,
   ...props
 }: DeleteChoiceButton) {
   return (
@@ -23,7 +22,7 @@ export default function DeleteChoiceButton({
       )}
       onClick={(evt) => {
         evt.stopPropagation()
-        onDelete && onDelete()
+        onClick && onClick(evt)
       }}
       {...props}
     >

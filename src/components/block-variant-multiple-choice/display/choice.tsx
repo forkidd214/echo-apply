@@ -10,21 +10,25 @@ import {
 } from '@/components/block-common'
 
 import DeleteChoiceButton from './delete-choice-button'
+import { cn } from '@/utils/cn'
+import { Check } from 'lucide-react'
 
 type ChoiceProps = {
   status: BlockStatus
   value?: string
-  onSubmit?: (arg0: { value: string }) => void
+  onUpdate?: (arg0: { value: string }) => void
   shortcut?: string
   onDelete?: Function
+  checked?: boolean
 }
 
 export default function Choice({
   status,
   value = '',
-  onSubmit,
+  onUpdate,
   shortcut,
   onDelete,
+  checked,
 }: ChoiceProps) {
   const [text, setText] = useState(value)
   const editorRef = useRef<HTMLDivElement>(null)
@@ -53,7 +57,7 @@ export default function Choice({
   }
   const handleBlur = () => {
     setState({ focus: false })
-    onSubmit && onSubmit({ value: text })
+    onUpdate && onUpdate({ value: text })
   }
   const handlePointerEnter = () => setState({ hover: true })
   const handlePointerLeave = () => setState({ hover: false })
@@ -75,9 +79,12 @@ export default function Choice({
 
   return (
     <Button
-      as={isEditing ? 'div' : undefined}
+      as={'div'}
       variant={'outline'}
-      className="relative flex h-full w-full min-w-[5em] items-start gap-2 hyphens-auto whitespace-normal break-words p-2 text-left text-primary ring-1 ring-ring hover:cursor-pointer hover:text-primary"
+      className={cn(
+        'relative flex h-full w-full min-w-[5em] items-start gap-2 hyphens-auto whitespace-normal break-words p-2 text-left text-primary ring-1 ring-ring hover:cursor-pointer hover:bg-primary/20 hover:text-primary',
+        checked && 'bg-accent ring-2',
+      )}
       onFocus={handleFocus}
       onBlur={handleBlur}
       onPointerEnter={handlePointerEnter}
@@ -86,28 +93,42 @@ export default function Choice({
       {isEditing && (
         <DeleteChoiceButton
           isHidden={!isDeleteButtonShown}
-          onDelete={onDelete}
+          onClick={() => onDelete && onDelete()}
         />
       )}
 
-      <ChoiceShorcut>{shortcut}</ChoiceShorcut>
+      <ChoiceShortcut checked={checked}>{shortcut}</ChoiceShortcut>
       <BlockTextEditor
         value={text}
         setValue={setText}
         variant={'choice'}
-        className="max-w-[calc(100%-2rem)] flex-auto"
+        className="max-w-[calc(100%-4rem)] flex-auto"
         placeholder="Choice"
-        innerRef={editorRef}
+        ref={editorRef}
         disabled={!isEditing}
         hasNoLineBreak
       />
+      <span className="flex h-6 w-6 items-center justify-center self-center">
+        {checked && <Check className={cn('h-6 w-6')} />}
+      </span>
     </Button>
   )
 }
 
-const ChoiceShorcut = ({ children }: { children?: ReactNode }) => {
+const ChoiceShortcut = ({
+  checked,
+  children,
+}: {
+  checked?: boolean
+  children?: ReactNode
+}) => {
   return (
-    <span className="flex h-6 w-6 items-center justify-center rounded-md border border-primary bg-accent">
+    <span
+      className={cn(
+        'flex h-6 w-6 items-center justify-center rounded-md border border-primary bg-accent',
+        checked && 'bg-primary text-primary-foreground',
+      )}
+    >
       {children}
     </span>
   )
