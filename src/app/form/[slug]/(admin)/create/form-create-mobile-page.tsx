@@ -17,7 +17,7 @@ export default function FormCreateMobilePage() {
   const { updateActiveBlockId } = useBlockNavigator()
 
   return (
-    <MobileView className="h-full">
+    <MobileView>
       <div className="relative h-full bg-muted">
         <div className="h-full min-h-0 space-y-4 overflow-y-auto p-2">
           <p>Content</p>
