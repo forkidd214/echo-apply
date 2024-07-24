@@ -3,7 +3,7 @@ import { Smartphone, Laptop } from 'lucide-react'
 
 import AddBlockButton from '@/components/add-block-button'
 import Block from '@/components/block'
-import { BlockThumnailPane } from '@/components/block-thumnail'
+import { BlockThumbnailPane } from '@/components/block-thumbnail'
 import useBlockNavigator from '@/components/block/use-block-navigator'
 import { DesktopView } from '@/components/responsive'
 import { Button } from '@/components/ui/button'
@@ -22,7 +22,7 @@ export default function FormCreateDesktopPage() {
   const [isMobileCanvas, setIsMobileCanvas] = React.useState(true)
 
   return (
-    <DesktopView className="h-full">
+    <DesktopView>
       <div className="grid h-full grid-cols-[256px_1fr] grid-rows-[48px_1fr] gap-2 p-2 pt-0">
         {/* toolbar on top */}
         <section className="col-span-2 flex items-center gap-1 rounded-lg rounded-t-none bg-secondary p-4 pl-2 text-muted-foreground">
@@ -50,7 +50,7 @@ export default function FormCreateDesktopPage() {
 
         {/* sidebar on left */}
         <section className="flex max-h-full flex-col gap-4 overflow-y-auto rounded-lg bg-secondary p-4">
-          <BlockThumnailPane />
+          <BlockThumbnailPane />
         </section>
 
         {/* canvas on center */}

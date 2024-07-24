@@ -17,15 +17,15 @@ import {
   DropdownMenuItem,
 } from '@/components/ui/dropdown-menu'
 
-type BlockThumnailCardProps = {
+type BlockThumbnailCardProps = {
   block: NonNullable<ReturnType<typeof useBlockRead>['data']>
   className?: string
 }
 
 export default React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & BlockThumnailCardProps
->(function BlockThumnailCard({ block, className }, ref) {
+  React.HTMLAttributes<HTMLDivElement> & BlockThumbnailCardProps
+>(function BlockThumbnailCard({ block, className }, ref) {
   const { currentBlockId, updateActiveBlockId } = useBlockNavigator()
   const { mutate: deleteBlock } = useBlockDelete()
 

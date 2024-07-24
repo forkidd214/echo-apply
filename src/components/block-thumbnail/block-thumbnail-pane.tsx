@@ -3,9 +3,9 @@ import * as React from 'react'
 import { useParams } from 'next/navigation'
 import Sortable from '@/components/sortable'
 import { useBlockList, useBlockUpdateMany } from '@/lib/use-block'
-import BlockThumnailCard from './block-thumnail-card'
+import BlockThumbnailCard from './block-thumbnail-card'
 
-export default function BlockThumnailPane() {
+export default function BlockThumbnailPane() {
   // get form ID from slug
   const { slug } = useParams()
   const formId = typeof slug === 'string' ? slug : slug[0]
@@ -14,7 +14,7 @@ export default function BlockThumnailPane() {
   const { data: blocks, isSuccess } = useBlockList(formId)
   const { mutate: updateBlockMany } = useBlockUpdateMany()
 
-  // block states for block thumnail DnD re-order
+  // block states for block thumbnail DnD re-order
   const [blockOrder, setBlockOrder] = React.useState(blocks ?? [])
   const [isOrderChange, setIsOrderChange] = React.useState(false)
 
@@ -57,9 +57,9 @@ export default function BlockThumnailPane() {
     <Sortable
       items={blockOrder}
       onItemOrderChange={handleItemOrderChange}
-      renderItem={(block) => <BlockThumnailCard block={block} />}
+      renderItem={(block) => <BlockThumbnailCard block={block} />}
       renderActiveOverlay={(block) => (
-        <BlockThumnailCard
+        <BlockThumbnailCard
           block={block}
           className={`shadow-[0_16px_16px_rgba(0,0,0,0.25)]`}
         />
