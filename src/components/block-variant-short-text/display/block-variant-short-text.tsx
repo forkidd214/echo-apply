@@ -18,23 +18,34 @@ export default function BlockVariantShortText({
   id,
   status,
 }: BlockVariantShortTextProps) {
+  const isEditing = status === 'EDIT'
   const { control } = useFormContext()
 
+  const renderShortText = (props?: any) => (
+    <BlockTextEditor
+      variant={'answer'}
+      placeholder="Type your answer here..."
+      hasNoLineBreak={true}
+      disabled={status === 'EDIT'}
+      value={''}
+      {...props}
+    />
+  )
+
+  // render text editor only in editing
+  if (isEditing) {
+    return renderShortText()
+  }
+
+  // otherwise, render form control
   return (
     <Controller
       name={id}
       defaultValue={''}
       control={control}
-      shouldUnregister
       render={({ field, fieldState }) => (
         <>
-          <BlockTextEditor
-            variant={'answer'}
-            placeholder="Type your answer here..."
-            hasNoLineBreak={true}
-            disabled={status === 'EDIT'}
-            {...field}
-          />
+          {renderShortText(field)}
           {fieldState.error && (
             <BlockMessage>{fieldState.error.message}</BlockMessage>
           )}
