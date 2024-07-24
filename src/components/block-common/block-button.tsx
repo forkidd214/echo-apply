@@ -13,7 +13,7 @@ export default function BlockButton({
   ...props
 }: BlockButtonProps) {
   return (
-    <Button asChild={status === 'EDIT'} {...props}>
+    <Button type="button" asChild={status === 'EDIT'} {...props}>
       <span>{children}</span>
     </Button>
   )

@@ -71,10 +71,12 @@ export default function BlockCarousel({
         ))}
       </CarouselContent>
       <CarouselPrevious
+        type="button"
         variant="default"
         className="bottom-4 left-4 top-[revert] translate-x-[revert] rounded rounded-t-none"
       />
       <CarouselNext
+        type="button"
         variant="default"
         className="insect-0 bottom-4 left-12 translate-x-[1px] rounded rounded-b-none"
       />
