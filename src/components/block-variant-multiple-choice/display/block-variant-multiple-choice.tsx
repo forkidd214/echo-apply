@@ -8,8 +8,6 @@ import { cn } from '@/utils/cn'
 import Choice from './choice'
 import AddChoiceButton from './add-choice-button'
 import useMultipleChoice from './use-multiple-choice'
-import React, { useEffect, useState } from 'react'
-import { type } from 'os'
 
 type BlockVariantMultipleChoiceProps = {
   id: string

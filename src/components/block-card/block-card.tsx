@@ -29,7 +29,7 @@ export default function BlockCard({
       <CardContent className="flex p-6">
         <Drawer onOpenChange={(isOpen) => isOpen && onOpen && onOpen()}>
           <DrawerTrigger
-            asChild // otherwhise illegal <button><button/></button>
+            asChild // otherwise illegal <button><button/></button>
             className={cn(
               '-m-6 flex-1 p-6 text-left hover:cursor-pointer',
               'relative after:absolute after:inset-0 after:bg-transparent',

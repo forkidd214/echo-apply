@@ -24,7 +24,7 @@ export default function BlockThumbnailPane() {
     setIsOrderChange(true)
   }
 
-  // update block order state everytime block data is refreshed
+  // update block order state every time block data is refreshed
   React.useEffect(() => {
     if (isSuccess) {
       setBlockOrder(blocks)
