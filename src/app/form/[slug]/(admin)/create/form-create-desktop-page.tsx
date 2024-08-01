@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from '@/components/ui/tooltip'
+import { FormProvider } from '@/lib/form-context'
 
 export default function FormCreateDesktopPage() {
   // block selector for the canvas
@@ -55,7 +56,9 @@ export default function FormCreateDesktopPage() {
 
         {/* canvas on center */}
         <BlockCanvas isMobile={isMobileCanvas}>
-          {currentBlockId && <Block id={currentBlockId} status={'EDIT'} />}
+          <FormProvider>
+            {currentBlockId && <Block id={currentBlockId} status={'EDIT'} />}
+          </FormProvider>
         </BlockCanvas>
       </div>
     </DesktopView>

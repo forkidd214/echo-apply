@@ -20,6 +20,7 @@ type ChoiceProps = {
   shortcut?: string
   onDelete?: Function
   checked?: boolean
+  disabled?: boolean
 }
 
 export default function Choice({
@@ -29,6 +30,7 @@ export default function Choice({
   shortcut,
   onDelete,
   checked,
+  disabled,
 }: ChoiceProps) {
   const [text, setText] = useState(value)
   const editorRef = useRef<HTMLDivElement>(null)
@@ -84,6 +86,7 @@ export default function Choice({
       className={cn(
         'relative flex h-full w-full min-w-[5em] items-start gap-2 hyphens-auto whitespace-normal break-words p-2 text-left text-primary ring-1 ring-ring hover:cursor-pointer hover:bg-primary/20 hover:text-primary',
         checked && 'bg-accent ring-2',
+        disabled && 'opacity-50 hover:cursor-not-allowed',
       )}
       onFocus={handleFocus}
       onBlur={handleBlur}

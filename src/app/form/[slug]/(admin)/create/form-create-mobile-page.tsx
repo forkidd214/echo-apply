@@ -5,6 +5,7 @@ import BlockCard from '@/components/block-card'
 import useBlockNavigator from '@/components/block/use-block-navigator'
 import { MobileView } from '@/components/responsive'
 import { useBlockDelete, useBlockList } from '@/lib/use-block'
+import { FormProvider } from '@/lib/form-context'
 
 export default function FormCreateMobilePage() {
   // get form ID from slug
@@ -20,21 +21,23 @@ export default function FormCreateMobilePage() {
     <MobileView>
       <div className="relative h-full bg-muted">
         <div className="h-full min-h-0 space-y-4 overflow-y-auto p-2">
-          <p>Content</p>
-          {blocks?.map(({ id }) => {
-            return (
-              <div key={id}>
-                <BlockCard
-                  onOpen={() => updateActiveBlockId(id)}
-                  onDelete={() => deleteBlock(id)}
-                  renderBlock={({ status }) => (
-                    <Block id={id} status={status} />
-                  )}
-                />
-              </div>
-            )
-          })}
-          <p>End</p>
+          <FormProvider>
+            <p>Content</p>
+            {blocks?.map(({ id }) => {
+              return (
+                <div key={id}>
+                  <BlockCard
+                    onOpen={() => updateActiveBlockId(id)}
+                    onDelete={() => deleteBlock(id)}
+                    renderBlock={({ status }) => (
+                      <Block id={id} status={status} />
+                    )}
+                  />
+                </div>
+              )
+            })}
+            <p>End</p>
+          </FormProvider>
         </div>
         <div className="absolute bottom-4 right-4">
           <AddBlockButton />

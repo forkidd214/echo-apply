@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import BlockCanvas from '@/components/block-canvas'
 import Block from '@/components/block'
 import BlockCarousel from '@/components/block-carousel'
+import { FormProvider } from '@/lib/form-context'
 
 type FormPreviewButtonProps = {
   isMobile?: boolean
@@ -34,14 +35,16 @@ export default function FormPreviewButton({
         className="h-screen w-screen max-w-none"
         onCloseAutoFocus={(evt) => evt.preventDefault()}
       >
-        <BlockCanvas isMobile={isMobile}>
-          <BlockCarousel
-            blocks={blocks ?? []}
-            renderBlock={(id: string, { scrollNext }) => (
-              <Block id={id} status={'PREVIEW'} onNext={scrollNext} />
-            )}
-          />
-        </BlockCanvas>
+        <FormProvider>
+          <BlockCanvas isMobile={isMobile}>
+            <BlockCarousel
+              blocks={blocks ?? []}
+              renderBlock={(id: string, { scrollNext }) => (
+                <Block id={id} status={'PREVIEW'} onNext={scrollNext} />
+              )}
+            />
+          </BlockCanvas>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   )
