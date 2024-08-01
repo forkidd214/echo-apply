@@ -10,7 +10,7 @@ export default function AddChoiceButton({ onClick }: AddChoiceButtonProps) {
   return (
     <Button
       variant={'link'}
-      className="underline hover:opacity-70"
+      className="w-fit underline hover:opacity-70"
       onClick={onClick}
     >
       Add choice
