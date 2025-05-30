@@ -105,8 +105,8 @@ const ChoiceFormField = ({
    * - If there are multiple checkboxes, the value will be an array of the checked values, e.g., `["value1", "value2", "value3"]`.
    */
   const fieldName = `${blockId}`
-  const filedValue = watch(fieldName) as string[]
-  const checked = !isEditing && !!filedValue && filedValue.includes(value)
+  const fieldValue = watch(fieldName) as string[]
+  const checked = !isEditing && !!fieldValue && fieldValue.includes(value)
 
   /**
    * Determines if a choice should be disabled.
@@ -115,7 +115,7 @@ const ChoiceFormField = ({
    * - `maxSelected`: True if the maximum selections have been reached.
    * - `disabled`: True if not checked and `maxSelected` is true.
    */
-  const selected = filedValue?.length ?? 0
+  const selected = fieldValue?.length ?? 0
   const { max, variant } = block?.attributes as Attributes
   const maxSelected =
     variant === 'single-selection' && selected >= 1
