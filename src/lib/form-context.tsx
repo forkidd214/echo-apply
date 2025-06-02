@@ -60,7 +60,7 @@ const useFormSchema = () => {
 
   const formSchema = z.object({ ...schema })
 
-  return {formSchema, defaultValues}
+  return { formSchema, defaultValues }
 }
 
 /**
@@ -71,12 +71,12 @@ type FormProviderProps = {
 }
 
 function FormProvider({ children }: FormProviderProps) {
-  const {formSchema, defaultValues} = useFormSchema()
+  const { formSchema, defaultValues } = useFormSchema()
 
   const methods = useForm<z.infer<typeof formSchema>>({
     shouldUnregister: true,
     resolver: zodResolver(formSchema),
-    defaultValues
+    defaultValues,
   })
 
   return (

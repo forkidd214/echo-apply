@@ -47,7 +47,7 @@ export default function ReactQueryProviders(props: {
       <ReactQueryStreamedHydration>
         {props.children}
       </ReactQueryStreamedHydration>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" />
     </QueryClientProvider>
   )
 }
