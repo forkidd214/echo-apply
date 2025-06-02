@@ -7,6 +7,7 @@ import { useBlockList } from '@/lib/use-block'
 import { useFormRead } from '@/lib/use-form'
 import { Button } from '@/components/ui/button'
 import { FormProvider, useFormContext } from '@/lib/form-context'
+import { useResponseCreate } from '@/lib/use-response'
 
 export default function Page() {
   const { slug } = useParams()
@@ -24,7 +25,7 @@ export default function Page() {
 
   return (
     <FormProvider>
-      <Form>
+      <Form id={formId}>
         <BlockCarousel
           blocks={blocks ?? []}
           renderBlock={(id: string, { scrollNext }) => (
@@ -36,14 +37,24 @@ export default function Page() {
   )
 }
 
-function Form({ children }: { children: React.ReactNode }) {
+function Form({ id, children }: { id: string; children: React.ReactNode }) {
   const {
     handleSubmit,
     formState: { errors },
   } = useFormContext()
 
-  const onSubmit = (data: any) => {
+  const { mutate: createResponse } = useResponseCreate()
+
+  const onSubmit = (data: { [blockId: string]: string | string[] }) => {
     console.log(data)
+
+    createResponse({
+      p_form_id: id,
+      p_answers: Object.entries(data).map(([blockId, value]) => ({
+        block_id: blockId,
+        value,
+      })),
+    })
   }
 
   return (
