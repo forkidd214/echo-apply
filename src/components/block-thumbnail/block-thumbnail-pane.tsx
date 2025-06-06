@@ -1,14 +1,13 @@
 import * as React from 'react'
 
-import { useParams } from 'next/navigation'
 import Sortable from '@/components/sortable'
 import { useBlockList, useBlockUpdateMany } from '@/lib/use-block'
 import BlockThumbnailCard from './block-thumbnail-card'
+import { useFormIdParams } from '@/utils/helpers'
 
 export default function BlockThumbnailPane() {
   // get form ID from slug
-  const { slug } = useParams()
-  const formId = typeof slug === 'string' ? slug : slug[0]
+  const formId = useFormIdParams()
 
   // block data hooks
   const { data: blocks, isSuccess } = useBlockList(formId)

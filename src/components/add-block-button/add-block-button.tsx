@@ -12,9 +12,9 @@ import {
 import { Button } from '@/components/ui/button'
 import { useBlockCreate, useBlockList, useBlockTypes } from '@/lib/use-block'
 import { cn } from '@/utils/cn'
-import { useParams } from 'next/navigation'
 import { makeAttributesShortText } from '@/components/block-variant-short-text'
 import { makeAttributesMultipleChoice } from '@/components/block-variant-multiple-choice'
+import { useFormIdParams } from '@/utils/helpers'
 
 type AddBlockButtonProps = {
   variant?: 'mobile' | 'desktop'
@@ -26,8 +26,7 @@ export default function AddBlockButton({
   variant = 'mobile',
 }: AddBlockButtonProps) {
   // get form ID from slug
-  const { slug } = useParams()
-  const formId = typeof slug === 'string' ? slug : slug[0]
+  const formId = useFormIdParams()
 
   // block hooks
   const { data: blocks } = useBlockList(formId)
@@ -48,7 +47,7 @@ export default function AddBlockButton({
     const newBlock = {
       form_id: formId,
       index: 1 + (blocks?.length ?? 0),
-      title: '...',
+      title: '',
       type,
       attributes,
     }

@@ -1,16 +1,15 @@
 'use client'
 
-import { useParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/utils/cn'
 import { useFormRead, useFormUpdate } from '@/lib/use-form'
 import { Loader2 } from 'lucide-react'
+import { useFormIdParams } from '@/utils/helpers'
 
 type PublishButtonProps = {}
 
 export default function PublishButton({}: PublishButtonProps) {
-  const { slug } = useParams()
-  const formId = typeof slug === 'string' ? slug : slug[0]
+  const formId = useFormIdParams()
   const { data: form, isLoading } = useFormRead(formId)
   const { mutate: updateForm } = useFormUpdate()
 

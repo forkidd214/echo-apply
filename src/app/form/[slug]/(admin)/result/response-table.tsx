@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { useParams } from 'next/navigation'
 
 import {
   Table,
@@ -15,12 +14,12 @@ import {
 import { cn } from '@/utils/cn'
 import { useResponseList } from '@/lib/use-response'
 import { useBlockList } from '@/lib/use-block'
+import { useFormIdParams } from '@/utils/helpers'
 
 type ResponseTableProps = {}
 
 export default function ResponseTable({}: ResponseTableProps) {
-  const { slug } = useParams()
-  const formId = typeof slug === 'string' ? slug : slug[0]
+  const formId = useFormIdParams()
 
   const { data: blocks } = useBlockList(formId)
   const { data: responses } = useResponseList(formId)

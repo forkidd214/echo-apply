@@ -15,10 +15,10 @@ const DevTool = dynamic(
   { ssr: false },
 )
 
-import { useParams } from 'next/navigation'
 import { useBlockList } from '@/lib/use-block'
 import { makeBlockSchema as makeShortTextSchema } from '@/components/block-variant-short-text'
 import { makeBlockSchema as makeMultipleChoiceSchema } from '@/components/block-variant-multiple-choice'
+import { useFormIdParams } from '@/utils/helpers'
 
 /**
  * Map of block types to their corresponding schema generation functions.
@@ -45,8 +45,7 @@ const defaultValuesByType: { [blockType: string]: any } = {
  * @returns A Zod object schema representing the form structure.
  */
 const useFormSchema = () => {
-  const { slug } = useParams()
-  const formId = typeof slug === 'string' ? slug : slug[0]
+  const formId = useFormIdParams()
   const { data } = useBlockList(formId)
   const blocks = data ?? []
 
