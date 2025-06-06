@@ -8,6 +8,7 @@ import {
   BlockStatus,
 } from '@/components/block-common'
 import { useBlockUpdate, useBlockRead } from '@/lib/use-block'
+import { useKeyPress } from '@/utils/helpers'
 
 type BlockWrapperProps = {
   id: string
@@ -24,6 +25,7 @@ export default function BlockWrapper({
 }: BlockWrapperProps) {
   const { mutate: updateBlock } = useBlockUpdate()
   const { data: block } = useBlockRead(id)
+  useKeyPress(['Enter'], onNext ?? (() => {}))
 
   if (!block) return null
 
