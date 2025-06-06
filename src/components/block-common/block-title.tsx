@@ -6,12 +6,14 @@ import { BlockStatus } from './types'
 
 type BlockTitleProps = {
   value?: string
+  placeholder?: string
   onSubmit?: (arg0: { title: string }) => void
   status: BlockStatus
 }
 
 export default function BlockTitle({
   value = '',
+  placeholder = 'Your question here',
   onSubmit,
   status,
 }: BlockTitleProps) {
@@ -31,7 +33,7 @@ export default function BlockTitle({
       value={title}
       setValue={setTitle}
       variant={'title'}
-      placeholder={isEditing ? 'Your question here' : ''}
+      placeholder={isEditing ? placeholder : ''}
       onBlur={() => value !== title && onSubmit && onSubmit({ title })}
       disabled={!isEditing}
     />
