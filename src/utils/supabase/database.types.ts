@@ -1,3 +1,9 @@
+export type FormEndBlock = {
+  title?: string | null
+  description?: string | null
+  submitButtonText?: string | null
+}
+
 export type Json =
   | string
   | number
@@ -69,6 +75,7 @@ export type Database = {
       forms: {
         Row: {
           created_at: string
+          form_end_block: FormEndBlock | null
           id: string
           name: string | null
           status: string
@@ -77,6 +84,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          form_end_block?: FormEndBlock | null
           id?: string
           name?: string | null
           status?: string
@@ -85,6 +93,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          form_end_block?: FormEndBlock | null
           id?: string
           name?: string | null
           status?: string
