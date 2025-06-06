@@ -18,11 +18,13 @@ type BlockCarouselProps = {
       scrollNext?: () => void
     },
   ) => ReactNode
+  renderFormEnd?: () => ReactNode
 }
 
 export default function BlockCarousel({
   blocks,
   renderBlock,
+  renderFormEnd,
 }: BlockCarouselProps) {
   const [api, setApi] = useState<CarouselApi>()
   const [progress, setProgress] = useState(0)
@@ -69,6 +71,7 @@ export default function BlockCarousel({
             })}
           </CarouselItem>
         ))}
+        {renderFormEnd && <CarouselItem>{renderFormEnd()}</CarouselItem>}
       </CarouselContent>
       <CarouselPrevious
         type="button"

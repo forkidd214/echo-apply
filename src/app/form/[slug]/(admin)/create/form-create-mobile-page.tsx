@@ -6,11 +6,12 @@ import useBlockNavigator from '@/components/block/use-block-navigator'
 import { MobileView } from '@/components/responsive'
 import { useBlockDelete, useBlockList } from '@/lib/use-block'
 import { FormProvider } from '@/lib/form-context'
+import FormEnd from '@/components/form-end'
+import { useFormIdParams } from '@/utils/helpers'
 
 export default function FormCreateMobilePage() {
   // get form ID from slug
-  const { slug } = useParams()
-  const formId = typeof slug === 'string' ? slug : slug[0]
+  const formId = useFormIdParams()
 
   // block hooks
   const { data: blocks } = useBlockList(formId)
@@ -22,7 +23,7 @@ export default function FormCreateMobilePage() {
       <div className="relative h-full bg-muted">
         <div className="h-full min-h-0 space-y-4 overflow-y-auto p-2">
           <FormProvider>
-            <p>Content</p>
+            <p className="text-muted-foreground">Content</p>
             {blocks?.map(({ id }) => {
               return (
                 <div key={id}>
@@ -36,7 +37,15 @@ export default function FormCreateMobilePage() {
                 </div>
               )
             })}
-            <p>End</p>
+            <p className="text-muted-foreground">End</p>
+            <div>
+              <BlockCard
+                onOpen={() => updateActiveBlockId(null)}
+                renderBlock={({ status }) => (
+                  <FormEnd id={formId} status={status} />
+                )}
+              />
+            </div>
           </FormProvider>
         </div>
         <div className="absolute bottom-4 right-4">

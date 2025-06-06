@@ -16,19 +16,27 @@ import {
   TooltipContent,
 } from '@/components/ui/tooltip'
 import { FormProvider } from '@/lib/form-context'
+import { Card, CardContent, CardDescription } from '@/components/ui/card'
+import { cn } from '@/utils/cn'
+import FormEnd from '@/components/form-end'
+import { useFormRead } from '@/lib/use-form'
+import { useFormIdParams } from '@/utils/helpers'
 
 export default function FormCreateDesktopPage() {
+  // get form ID from slug
+  const formId = useFormIdParams()
+
   // block selector for the canvas
   const { currentBlockId } = useBlockNavigator()
   const [isMobileCanvas, setIsMobileCanvas] = React.useState(true)
 
   return (
     <DesktopView>
-      <div className="grid h-full grid-cols-[256px_1fr] grid-rows-[48px_1fr] gap-2 p-2 pt-0">
+      <div className="grid h-full grid-cols-[256px_1fr] grid-rows-[48px_1fr] gap-2 overflow-hidden p-2 pt-0">
         {/* toolbar on top */}
         <section className="col-span-2 flex items-center gap-1 rounded-lg rounded-t-none bg-secondary p-4 pl-2 text-muted-foreground">
           <TooltipProvider delayDuration={100}>
-            <ToolbarItem tooltip="Add blcok">
+            <ToolbarItem tooltip="Add block">
               <AddBlockButton variant="desktop" />
             </ToolbarItem>
             <ToolbarItem
@@ -52,12 +60,18 @@ export default function FormCreateDesktopPage() {
         {/* sidebar on left */}
         <section className="flex max-h-full flex-col gap-4 overflow-y-auto rounded-lg bg-secondary p-4">
           <BlockThumbnailPane />
+          <hr className="mt-auto" />
+          <FormEndThumbnailPane />
         </section>
 
         {/* canvas on center */}
         <BlockCanvas isMobile={isMobileCanvas}>
           <FormProvider>
-            {currentBlockId && <Block id={currentBlockId} status={'EDIT'} />}
+            {currentBlockId ? (
+              <Block id={currentBlockId} status={'EDIT'} />
+            ) : (
+              <FormEnd id={formId} status="EDIT" />
+            )}
           </FormProvider>
         </BlockCanvas>
       </div>
@@ -81,5 +95,28 @@ const ToolbarItem = ({
         <p>{tooltip}</p>
       </TooltipContent>
     </Tooltip>
+  )
+}
+
+const FormEndThumbnailPane = () => {
+  // get form ID from slug
+  const formId = useFormIdParams()
+  // block selector for the canvas
+  const { currentBlockId, updateActiveBlockId } = useBlockNavigator()
+  const isCurrent = currentBlockId === null // Assuming null represents the form end block
+
+  const { data: form } = useFormRead(formId)
+
+  return (
+    <Card
+      className={cn('cursor-pointer', isCurrent && 'ring')}
+      onClick={() => updateActiveBlockId(null)}
+    >
+      <CardContent className="flex items-center justify-between gap-2 p-2 pl-4">
+        <CardDescription className="truncate">
+          {form?.form_end_block?.title ?? 'End'}
+        </CardDescription>
+      </CardContent>
+    </Card>
   )
 }

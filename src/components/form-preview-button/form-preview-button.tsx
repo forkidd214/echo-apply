@@ -1,6 +1,5 @@
 import { Play } from 'lucide-react'
 
-import { useParams } from 'next/navigation'
 import { useBlockList } from '@/lib/use-block'
 import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
@@ -8,6 +7,8 @@ import BlockCanvas from '@/components/block-canvas'
 import Block from '@/components/block'
 import BlockCarousel from '@/components/block-carousel'
 import { FormProvider } from '@/lib/form-context'
+import FormEnd from '@/components/form-end'
+import { useFormIdParams } from '@/utils/helpers'
 
 type FormPreviewButtonProps = {
   isMobile?: boolean
@@ -16,8 +17,7 @@ type FormPreviewButtonProps = {
 export default function FormPreviewButton({
   isMobile = true,
 }: FormPreviewButtonProps) {
-  const { slug } = useParams()
-  const formId = typeof slug === 'string' ? slug : slug[0]
+  const formId = useFormIdParams()
   const { data: blocks } = useBlockList(formId)
 
   return (
@@ -42,6 +42,7 @@ export default function FormPreviewButton({
               renderBlock={(id: string, { scrollNext }) => (
                 <Block id={id} status={'PREVIEW'} onNext={scrollNext} />
               )}
+              renderFormEnd={() => <FormEnd id={formId} status={'PREVIEW'} />}
             />
           </BlockCanvas>
         </FormProvider>

@@ -51,16 +51,18 @@ export default function BlockCard({
         </Drawer>
       </CardContent>
 
-      <CardFooter className="flex justify-end rounded-b-lg bg-muted px-2 py-1">
-        <Button
-          variant="ghost"
-          className="hover:bg-destructive hover:text-destructive-foreground [&>svg]:hover:opacity-100"
-          onClick={() => onDelete && onDelete()}
-        >
-          <Trash className="mr-2 h-4 w-4 fill-current opacity-70" />
-          <span>Delete</span>
-        </Button>
-      </CardFooter>
+      {onDelete && (
+        <CardFooter className="flex justify-end rounded-b-lg bg-muted px-2 py-1">
+          <Button
+            variant="ghost"
+            className="hover:bg-destructive hover:text-destructive-foreground [&>svg]:hover:opacity-100"
+            onClick={() => onDelete && onDelete()}
+          >
+            <Trash className="mr-2 h-4 w-4 fill-current opacity-70" />
+            <span>Delete</span>
+          </Button>
+        </CardFooter>
+      )}
     </Card>
   )
 }
