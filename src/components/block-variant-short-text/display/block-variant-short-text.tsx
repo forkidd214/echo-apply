@@ -7,7 +7,6 @@ import {
   BlockStatus,
   BlockTextEditor,
 } from '@/components/block-common'
-import React from 'react'
 
 type BlockVariantShortTextProps = {
   id: string

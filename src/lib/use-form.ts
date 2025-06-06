@@ -91,6 +91,7 @@ function useFormRead(id: string) {
   return useQuery({
     queryKey: formKeys.detail(id),
     queryFn: readForm,
+    retry: 1,
     initialData: () =>
       queryClient
         .getQueryData<
@@ -116,6 +117,7 @@ function useFormUpdate() {
     mutationFn: updateForm,
     onSettled: (_, __, variales) => {
       queryClient.invalidateQueries({ queryKey: formKeys.detail(variales.id) })
+      queryClient.invalidateQueries({ queryKey: formKeys.lists() })
     },
   })
 }
