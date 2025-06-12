@@ -51,8 +51,6 @@ export default function FormOptionButton({ formId }: FormOptionButtonProps) {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem>Rename</DropdownMenuItem>
-        <DropdownMenuSeparator />
         <DropdownMenuItem
           className="text-destructive focus:text-destructive"
           onSelect={() => {
