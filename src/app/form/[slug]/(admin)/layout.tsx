@@ -1,8 +1,8 @@
 import BackButton from '@/components/back-button'
 import FormNav from '@/components/form-nav'
 import FormTitleInput from '@/components/form-title-input'
-import OptionButton from '@/components/option-button'
 import PublishButton from '@/components/publish-button'
+import CopyLinkButton from '@/components/copy-link-button'
 import { cn } from '@/utils/cn'
 
 type FormLayoutProps = {
@@ -24,7 +24,7 @@ export default function FormLayout({ children }: FormLayoutProps) {
         </div>
         <div className="flex gap-2">
           <PublishButton />
-          <OptionButton />
+          <CopyLinkButton />
         </div>
         <div
           className={cn(
