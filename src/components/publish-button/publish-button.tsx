@@ -15,7 +15,13 @@ export default function PublishButton({}: PublishButtonProps) {
 
   const isPublish = form?.status === 'PUBLISH' ? true : false
   const togglePublish = () => {
-    updateForm({ id: formId, status: isPublish ? 'EDIT' : 'PUBLISH' })
+    if (
+      window.confirm(
+        `Are you sure you want to ${isPublish ? 'unpublish' : 'publish'} this form?`,
+      )
+    ) {
+      updateForm({ id: formId, status: isPublish ? 'EDIT' : 'PUBLISH' })
+    }
   }
 
   return (
