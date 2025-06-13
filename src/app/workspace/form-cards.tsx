@@ -10,7 +10,7 @@ type FormCardsProps = {}
 
 export default function FormCards({}: FormCardsProps) {
   const router = useRouter()
-  const { data: forms } = useFormList()
+  const { data: forms } = useFormList({ withResponses: true })
 
   return (
     <div className="space-y-4">
@@ -27,7 +27,7 @@ export default function FormCards({}: FormCardsProps) {
           </CardContent>
           <CardFooter className="flex justify-between py-1 pl-6 pr-2 text-sm text-muted-foreground">
             <div>
-              <span className="font-medium">{form.responses}</span>
+              <span className="font-medium">{form.responses?.length ?? 0}</span>
               <span> responses</span>
             </div>
             <FormOptionButton formId={form.id} />

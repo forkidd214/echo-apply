@@ -19,7 +19,7 @@ type FormTableProps = {}
 
 export default function FormTable({}: FormTableProps) {
   const router = useRouter()
-  const { data: forms } = useFormList()
+  const { data: forms } = useFormList({ withResponses: true })
 
   return (
     <Table>
@@ -48,7 +48,7 @@ export default function FormTable({}: FormTableProps) {
               {form.name}
             </TableCell>
             <TableCell className="whitespace-nowrap">
-              {form.responses}
+              {form.responses?.length ?? 0}
             </TableCell>
             <TableCell className="whitespace-nowrap">
               {(form.completion * 100).toFixed() + '%'}

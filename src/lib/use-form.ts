@@ -16,6 +16,22 @@ import type { Database } from '@/utils/supabase/database.types'
 import { createClient } from '@/utils/supabase/client'
 
 type FormsDataType = Database['public']['Tables']['forms']
+type FormWithRelations = FormsDataType['Row'] & {
+  blocks?: Array<Database['public']['Tables']['blocks']['Row']>
+  responses?: Array<
+    Database['public']['Tables']['responses']['Row'] & {
+      response_answers?: Array<
+        Database['public']['Tables']['response_answers']['Row']
+      >
+    }
+  >
+}
+
+type FormQueryOptions = {
+  withBlocks?: boolean
+  withResponses?: boolean
+  withResponseAnswers?: boolean
+}
 
 const supabase = createClient()
 
@@ -23,28 +39,70 @@ const supabase = createClient()
 const formKeys = {
   all: ['forms'] as const,
   lists: () => [...formKeys.all, 'list'] as const,
-  list: (state: 'all') => [...formKeys.lists(), { state }] as const,
+  list: (filters: { state?: 'all' } & FormQueryOptions) =>
+    [...formKeys.lists(), filters] as const,
   details: () => [...formKeys.all, 'detail'] as const,
-  detail: (id: string) => [...formKeys.details(), id] as const,
+  detail: (id: string, options?: FormQueryOptions) =>
+    [...formKeys.details(), id, options] as const,
 }
 
 /* ========== apis ========== */
-const listForms = async () =>
-  (await supabase.from('forms').select().throwOnError()).data ?? []
+const listForms = async (
+  options?: FormQueryOptions,
+): Promise<FormWithRelations[]> => {
+  let selectQuery = '*'
+
+  if (options?.withBlocks) {
+    selectQuery += ', blocks (*)'
+  }
+
+  if (options?.withResponses) {
+    selectQuery += ', responses (*)'
+  }
+
+  if (options?.withResponseAnswers) {
+    selectQuery += ', responses (*, response_answers (*))'
+  }
+
+  const { data, error } = await supabase
+    .from('forms')
+    .select(selectQuery)
+    .throwOnError()
+
+  if (error) throw error
+  return (data ?? []) as unknown as FormWithRelations[]
+}
 
 const readForm = async ({
-  queryKey, // only accept keys that come from the factory
-}: QueryFunctionContext<ReturnType<(typeof formKeys)['detail']>>) => {
-  const [, , id] = queryKey // ["forms", "detail", id]
+  queryKey,
+}: QueryFunctionContext<
+  ReturnType<(typeof formKeys)['detail']>
+>): Promise<FormWithRelations | null> => {
+  const [, , id, options] = queryKey // ["forms", "detail", id, options]
 
-  return (
-    await supabase
-      .from('forms')
-      .select(`*, blocks (form_id)`)
-      .eq('id', id) // query key dependencies safe
-      .single()
-      .throwOnError()
-  ).data
+  let selectQuery = '*'
+
+  if (options?.withBlocks) {
+    selectQuery += ', blocks (*)'
+  }
+
+  if (options?.withResponses) {
+    selectQuery += ', responses (*)'
+  }
+
+  if (options?.withResponseAnswers) {
+    selectQuery += ', responses (*, response_answers (*))'
+  }
+
+  const { data, error } = await supabase
+    .from('forms')
+    .select(selectQuery)
+    .eq('id', id)
+    .single()
+    .throwOnError()
+
+  if (error) throw error
+  return data as unknown as FormWithRelations | null
 }
 
 const createForm = async (form: Partial<FormsDataType['Insert']>) =>
@@ -74,29 +132,32 @@ const deleteForm = async (id: string) =>
   await supabase.from('forms').delete().eq('id', id)
 
 /* ========== helpers ========== */
-const transformForms = (forms: Awaited<ReturnType<typeof listForms>>) =>
-  forms.map((form) => ({ ...form, responses: 0, completion: 0 })) // calcultae responses and completion
+const transformForms = (forms: FormWithRelations[]) =>
+  forms.map((form) => {
+    const completion = 0 // TODO: calc submitted/started
+    return { ...form, completion }
+  })
 
 /* ========== hooks ========== */
-function useFormList() {
+function useFormList(options?: FormQueryOptions) {
   return useQuery({
-    queryKey: formKeys.list('all'),
-    queryFn: listForms,
+    queryKey: formKeys.list({ state: 'all', ...options }),
+    queryFn: () => listForms(options),
     select: transformForms,
   })
 }
 
-function useFormRead(id: string) {
+function useFormRead(id: string, options?: FormQueryOptions) {
   const queryClient = useQueryClient()
   return useQuery({
-    queryKey: formKeys.detail(id),
+    queryKey: formKeys.detail(id, options),
     queryFn: readForm,
     retry: 1,
     initialData: () =>
       queryClient
         .getQueryData<
-          Awaited<ReturnType<typeof listForms>>
-        >(formKeys.list('all'))
+          FormWithRelations[]
+        >(formKeys.list({ state: 'all', ...options }))
         ?.find((f) => f.id === id),
   })
 }
@@ -115,8 +176,8 @@ function useFormUpdate() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: updateForm,
-    onSettled: (_, __, variales) => {
-      queryClient.invalidateQueries({ queryKey: formKeys.detail(variales.id) })
+    onSettled: (_, __, variables) => {
+      queryClient.invalidateQueries({ queryKey: formKeys.detail(variables.id) })
       queryClient.invalidateQueries({ queryKey: formKeys.lists() })
     },
   })
