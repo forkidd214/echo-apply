@@ -1,4 +1,5 @@
 import { Inter } from 'next/font/google'
+import { Suspense } from 'react'
 
 import type { Metadata } from 'next'
 import Providers from './_providers'
@@ -24,7 +25,9 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="Echo Apply" />
       </head>
       <body className={cn(inter.className, 'relative flex h-screen flex-col')}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Suspense>{children}</Suspense>
+        </Providers>
       </body>
     </html>
   )
