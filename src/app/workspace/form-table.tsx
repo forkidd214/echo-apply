@@ -15,11 +15,13 @@ import FormOptionButton from './form-option-button'
 import { cn } from '@/utils/cn'
 import { useFormList } from '@/lib/use-form'
 
-type FormTableProps = {}
+type FormTableProps = {
+  userId: string
+}
 
-export default function FormTable({}: FormTableProps) {
+export default function FormTable({ userId }: FormTableProps) {
   const router = useRouter()
-  const { data: forms } = useFormList({ withResponses: true })
+  const { data: forms } = useFormList(userId, { withResponses: true })
 
   return (
     <Table>

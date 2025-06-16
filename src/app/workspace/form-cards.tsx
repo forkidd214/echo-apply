@@ -6,11 +6,13 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { useFormList } from '@/lib/use-form'
 import FormOptionButton from './form-option-button'
 
-type FormCardsProps = {}
+type FormCardsProps = {
+  userId: string
+}
 
-export default function FormCards({}: FormCardsProps) {
+export default function FormCards({ userId }: FormCardsProps) {
   const router = useRouter()
-  const { data: forms } = useFormList({ withResponses: true })
+  const { data: forms } = useFormList(userId, { withResponses: true })
 
   return (
     <div className="space-y-4">

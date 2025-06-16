@@ -39,7 +39,7 @@ const supabase = createClient()
 const formKeys = {
   all: ['forms'] as const,
   lists: () => [...formKeys.all, 'list'] as const,
-  list: (filters: { state?: 'all' } & FormQueryOptions) =>
+  list: (filters: { state?: 'all'; userId?: string } & FormQueryOptions) =>
     [...formKeys.lists(), filters] as const,
   details: () => [...formKeys.all, 'detail'] as const,
   detail: (id: string, options?: FormQueryOptions) =>
@@ -48,6 +48,7 @@ const formKeys = {
 
 /* ========== apis ========== */
 const listForms = async (
+  userId: string,
   options?: FormQueryOptions,
 ): Promise<FormWithRelations[]> => {
   let selectQuery = '*'
@@ -67,6 +68,7 @@ const listForms = async (
   const { data, error } = await supabase
     .from('forms')
     .select(selectQuery)
+    .eq('user_id', userId)
     .throwOnError()
 
   if (error) throw error
@@ -139,10 +141,10 @@ const transformForms = (forms: FormWithRelations[]) =>
   })
 
 /* ========== hooks ========== */
-function useFormList(options?: FormQueryOptions) {
+function useFormList(userId: string, options?: FormQueryOptions) {
   return useQuery({
-    queryKey: formKeys.list({ state: 'all', ...options }),
-    queryFn: () => listForms(options),
+    queryKey: formKeys.list({ state: 'all', userId, ...options }),
+    queryFn: () => listForms(userId, options),
     select: transformForms,
   })
 }

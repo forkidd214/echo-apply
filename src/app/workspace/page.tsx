@@ -11,7 +11,6 @@ import FormCards from './form-cards'
 
 export default async function Page() {
   const supabase = createClient()
-
   const { data: user } = await supabase.from('users').select('*').single()
 
   if (!user) return redirect('/login')
@@ -34,10 +33,10 @@ export default async function Page() {
       <main className="-mx-2 flex-grow bg-muted py-4">
         <div className="container">
           <MobileView>
-            <FormCards />
+            <FormCards userId={user.id} />
           </MobileView>
           <DesktopView>
-            <FormTable />
+            <FormTable userId={user.id} />
           </DesktopView>
         </div>
       </main>
