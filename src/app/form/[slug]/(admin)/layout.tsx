@@ -4,12 +4,19 @@ import FormTitleInput from '@/components/form-title-input'
 import PublishButton from '@/components/publish-button'
 import CopyLinkButton from '@/components/copy-link-button'
 import { cn } from '@/utils/cn'
+import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 
 type FormLayoutProps = {
   children: React.ReactNode
 }
 
-export default function FormLayout({ children }: FormLayoutProps) {
+export default async function FormLayout({ children }: FormLayoutProps) {
+  const supabase = createClient()
+  const { data: user } = await supabase.from('users').select('*').single()
+
+  if (!user) return redirect('/login')
+
   return (
     <div className={cn('flex max-h-full flex-grow flex-col px-2')}>
       <header
