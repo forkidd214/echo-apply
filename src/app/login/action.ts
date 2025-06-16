@@ -2,8 +2,16 @@
 
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
-
+import { ZodError, z } from 'zod'
 import { createClient } from '@/utils/supabase/server'
+
+const loginSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z
+    .string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(20, 'Password must be at most 20 characters'),
+})
 
 export async function login(formData: FormData) {
   const supabase = createClient()
@@ -14,15 +22,19 @@ export async function login(formData: FormData) {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
   }
+  const validatedData = await loginSchema
+    .parseAsync(data)
+    .catch((error: ZodError) => {
+      redirect(`/login?error=${encodeURIComponent(error.errors[0].message)}`)
+    })
 
-  const { error } = await supabase.auth.signInWithPassword(data)
+  const { error } = await supabase.auth.signInWithPassword(validatedData)
 
   if (error) {
-    const redirectTo = `/login?error=${encodeURIComponent(error.name)}&error_message=${encodeURIComponent(error.message)}`
-    redirect(redirectTo)
+    redirect(`/login?error=${encodeURIComponent(error.message)}`)
   }
 
-  revalidatePath('/', 'layout')
+  revalidatePath('/')
   redirect('/workspace')
 }
 
@@ -36,13 +48,18 @@ export async function signup(formData: FormData) {
     password: formData.get('password') as string,
   }
 
-  const { error } = await supabase.auth.signUp(data)
+  const validatedData = await loginSchema
+    .parseAsync(data)
+    .catch((error: ZodError) => {
+      redirect(`/login?error=${encodeURIComponent(error.errors[0].message)}`)
+    })
+
+  const { error } = await supabase.auth.signUp(validatedData)
 
   if (error) {
-    const redirectTo = `/login?error=${encodeURIComponent(error.name)}&error_message=${encodeURIComponent(error.message)}`
-    redirect(redirectTo)
+    redirect(`/login?error=${encodeURIComponent(error.message)}`)
   }
 
-  revalidatePath('/', 'layout')
-  redirect('/workspace')
+  revalidatePath('/')
+  redirect('/login/success')
 }

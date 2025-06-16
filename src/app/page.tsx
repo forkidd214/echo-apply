@@ -1,5 +1,16 @@
-import Image from 'next/image'
+import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 
-export default function Home() {
-  return <main className="min-h-screen">Hello world</main>
+export default async function Home() {
+  const supabase = createClient()
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (user) {
+    redirect('/workspace')
+  }
+
+  redirect('/login')
 }
